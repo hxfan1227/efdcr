@@ -4,7 +4,7 @@ NULL
 #' @param src_grd Character. Full name of the Delft3D RFGGRID (.grd) file to be formatted.
 #' @param dst_grd Character. Full name of the formatted Delft3D RFGGRID (.grd) file.
 #' @param na_pattern Character. The MISSING VALUE in the src_grd.
-#' @param na_repalcement Character. A character vector of replacements.
+#' @param na_replacement Character. A character vector of replacements.
 #' @param coord_sys Character. Coordinate system in the grd.
 #' @export
 #' @examples \dontrun{
