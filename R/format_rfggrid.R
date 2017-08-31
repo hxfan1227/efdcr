@@ -1,3 +1,5 @@
+#' @importFrom stringr str_replace
+NULL
 #' Format Delft3D RFGGRID (.grd) file.
 #' @param src_grd Character. Full name of the Delft3D RFGGRID (.grd) file to be formatted.
 #' @param dst_grd Character. Full name of the formatted Delft3D RFGGRID (.grd) file.
@@ -5,11 +7,15 @@
 #' @param na_repalcement Character. A character vector of replacements.
 #' @param coord_sys Character. Coordinate system in the grd.
 #' @export
+#' @examples \dontrun{
+#' f <- system.file("extdata/poyang_lake.grd", package="efdcr")
+#' format_rfggrid(src_grd = f, dst_grd = tempfile(fileext = ".grd"))
+#' }
 
 format_rfggrid <- function(src_grd,
                            dst_grd,
                            na_pattern = "-9.99999000000000024E\\+02",
-                           na_replacement = "0.00000000000000000E+00",
+                           na_replacement = " 0.00000000000000000E+00",
                            coord_sys = "Cartesian")
 {
 
@@ -24,12 +30,10 @@ format_rfggrid <- function(src_grd,
   writeLines("*", dst_file)
   writeLines(paste("Coordinate System =", coord_sys), dst_file)
   writeLines(paste("Missing Value =", na_replacement), dst_file)
-  for (i in 7:length(src_char)) writeLines(do.call(paste, as.list(stringr::str_replace(stringr::str_split(src_char[i], " ")[[1]],
-                                                                                       pattern = na_pattern,
-                                                                                       replacement = na_replacement)
-                                                                  )
-                                                   ),
-                                           dst_file)
+  for (i in 7:length(src_char)) writeLines(str_replace_all(src_char[i],
+                                                           pattern = na_pattern,
+                                                           replacement = na_replacement),
+                                           dst_file
+                                           )
   close(dst_file, "rw")
 }
-
