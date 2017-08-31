@@ -8,5 +8,7 @@ Description: efdcr provides useful tools for data preparation for Environmental 
 License: GPL (>=2)
 Encoding: UTF-8
 LazyData: true
-Imports: stringr
+Imports: stringr,
+    broom,
+    raster
 RoxygenNote: 6.0.1
