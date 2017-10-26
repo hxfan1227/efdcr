@@ -10,5 +10,8 @@ Encoding: UTF-8
 LazyData: true
 Imports: stringr,
     broom,
-    raster
+    raster,
+    data.table,
+    plyr,
+    lubridate
 RoxygenNote: 6.0.1
