@@ -4,8 +4,8 @@
 #' @importFrom stringr str_detect
 NULL
 #' Tidy the observed water level data
-#' @param x Character. Full name the water levle file to be handled.
-#' @exprot
+#' @param x Character. Full name the water level file to be handled.
+#' @export
 tidy_water_level <- function(x){
   fname <- x
   wb <- XLConnect::loadWorkbook(fname)
