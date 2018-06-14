@@ -7,7 +7,7 @@
 tidy_water_level(x)
 }
 \arguments{
-\item{x}{Character. Full name the water levle file to be handled.}
+\item{x}{Character. Full name the water level file to be handled.}
 }
 \description{
 Tidy the observed water level data
