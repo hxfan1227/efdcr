@@ -9,6 +9,8 @@ NULL
 #' y <- c(1, 0, 0, 1)
 #' cal_poly_area(x, y)
 #' }
+
+# the code is inspired by the EFDC code
 cal_poly_area <- function(x, y){
   polygon.n <- length(x)
   area <- 0
