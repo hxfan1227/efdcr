@@ -58,6 +58,7 @@ write_wq <- function(measure.var_, src.dt_, path_){
               append = T,
               row.names = seq(0, NROW(src.dt_[, ..measure.var_]) - 1),
               col.names = F,
-              quote = F)
+              quote = F,
+              na = '')
 }
 
