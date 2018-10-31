@@ -4,7 +4,8 @@
 \alias{format_rfggrid}
 \title{Format Delft3D RFGGRID (.grd) file.}
 \usage{
-format_rfggrid(src_grd, dst_grd, na_pattern = "-9.99999000000000024E\\\\+02",
+format_rfggrid(src_grd, dst_grd,
+  na_pattern = "-9.99999000000000024E\\\\+02",
   na_replacement = " 0.00000000000000000E+00", coord_sys = "Cartesian")
 }
 \arguments{

@@ -1,6 +1,7 @@
 #' @import data.table
 #' @import plyr
 #' @importFrom lubridate ymd
+#' @importFrom utils write.table
 NULL
 #' Convert csv data files into wq formats
 #' @param measure.vars vector of measure variables. Can be integer (corresponding measure column numbers)
