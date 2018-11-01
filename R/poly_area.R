@@ -7,11 +7,11 @@ NULL
 #' @examples \dontrun{
 #' x <- c(0, 0, 1, 1)
 #' y <- c(1, 0, 0, 1)
-#' cal_poly_area(x, y)
+#' poly_area(x, y)
 #' }
 
 # the code is inspired by the EFDC code
-cal_poly_area <- function(x, y){
+poly_area <- function(x, y){
   polygon.n <- length(x)
   area <- 0
   vec.x <- vec.y <- rep(0, 2)

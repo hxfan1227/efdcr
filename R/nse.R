@@ -5,7 +5,7 @@ NULL
 #' @return The Nash-Sutcliffe efficiency (NSE)
 #' @references Nash, J. E., and J.V. Sutcliffe (1970): River flow forecasting through conceptual models. 1. a discussion of principles. Journal of Hydrology 10, 282–290.
 #' @export
-cal_nse <- function(obs, sim, na.rm = T) {
+nse <- function(obs, sim, na.rm = T) {
   x <- obs
   y <- sim
   if (!check_dim_(x, y)) {
