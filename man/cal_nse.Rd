@@ -18,5 +18,5 @@ The Nash-Sutcliffe efficiency (NSE)
 Calculate the Nash-Sutcliffe efficiency (NSE)
 }
 \references{
-@references Nash, J. E., and J.V. Sutcliffe (1970): River flow forecasting through conceptual models. 1. a discussion of principles. Journal of Hydrology 10, 282–290.
+Nash, J. E., and J.V. Sutcliffe (1970): River flow forecasting through conceptual models. 1. a discussion of principles. Journal of Hydrology 10, 282–290.
 }
