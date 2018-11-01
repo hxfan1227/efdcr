@@ -8,7 +8,7 @@ Description: efdcr provides useful tools for data preparation for Environmental 
 License: GPL (>=2)
 Encoding: UTF-8
 LazyData: true
-Imports: 
+Imports:
     stringr,
     broom,
     raster,
@@ -17,7 +17,8 @@ Imports:
     lubridate,
     XLConnect,
     XLConnectJars,
-    ggplot2
+    ggplot2,
+    readr
 RoxygenNote: 6.1.0
 URL: https://github.com/hxfan1227/efdcr
 BugReports: https://github.com/hxfan1227/efdcr/issues
