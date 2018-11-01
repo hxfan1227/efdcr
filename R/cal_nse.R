@@ -3,7 +3,7 @@ NULL
 #' @param obs Numeric vector of matrix. Measured values
 #' @param sim Numeric vector of matrix. Predicted values
 #' @return The Nash-Sutcliffe efficiency (NSE)
-#' @references @references Nash, J. E., and J.V. Sutcliffe (1970): River flow forecasting through conceptual models. 1. a discussion of principles. Journal of Hydrology 10, 282–290.
+#' @references Nash, J. E., and J.V. Sutcliffe (1970): River flow forecasting through conceptual models. 1. a discussion of principles. Journal of Hydrology 10, 282–290.
 #' @export
 cal_nse <- function(obs, sim, na.rm = T) {
   x <- obs
