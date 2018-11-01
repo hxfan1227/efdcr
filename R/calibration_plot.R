@@ -2,7 +2,7 @@
 #'@import data.table
 #'@importFrom data.table :=
 #'@importFrom readr read_lines 
-#'@importFrom lubridate ddays ymd
+#'@importFrom lubridate ddays
 #'@importFrom stringr str_extract_all str_split_fixed
 #'@importFrom plyr rbind.fill
 NULL
@@ -14,7 +14,7 @@ NULL
 
 calibration_plot <- function(fname, ts_num, ...){
   water_elevation_file_header <- read_lines(fname, skip = 11, n_max = 1)
-  base_date <- ymd(str_extract_all(water_elevation_file_header, '\\d{4}/\\d{1,2}/\\d{1,2}', simplify = T)[1,1])
+  base_date <- as.Date(str_extract_all(water_elevation_file_header, '\\d{4}/\\d{1,2}/\\d{1,2}', simplify = T)[1,1])
   data_list <- list()
   data_to_read <- 0
   for (i in 1:ts_num){
