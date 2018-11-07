@@ -2,24 +2,7 @@
 % Please edit documentation in R/nse.R
 \name{check_dim_}
 \alias{check_dim_}
-\title{#' check dim
-#' 
-check_dim_ <- function(...){
-  arg_list <- list(...)
-  arg_class <- unlist(lapply(arg_list, class))
-  if (!all(arg_class == arg_class[1])) {
-    stop('Inputs are not with same class!')
-  }
-  arg_dim <- lapply(arg_list, dim)
-  if (all(unlist(lapply(arg_dim, is.null)))) {
-    arg_len <- unlist(lapply(arg_list, length))
-    return(all(arg_len == arg_len[1]))
-  } else {
-    return(all(unlist(lapply(arg_dim, function(x){all(x == arg_dim[[1]])}))))
-  }
-  
-}
-check dim}
+\title{Check if all the inputs are same in dimensions}
 \usage{
 check_dim_(...)
 }
@@ -27,22 +10,5 @@ check_dim_(...)
 \item{...}{Objects to be checked}
 }
 \description{
-#' check dim
-#' 
-check_dim_ <- function(...){
-  arg_list <- list(...)
-  arg_class <- unlist(lapply(arg_list, class))
-  if (!all(arg_class == arg_class[1])) {
-    stop('Inputs are not with same class!')
-  }
-  arg_dim <- lapply(arg_list, dim)
-  if (all(unlist(lapply(arg_dim, is.null)))) {
-    arg_len <- unlist(lapply(arg_list, length))
-    return(all(arg_len == arg_len[1]))
-  } else {
-    return(all(unlist(lapply(arg_dim, function(x){all(x == arg_dim[[1]])}))))
-  }
-  
-}
-check dim
+Check if all the inputs are same in dimensions
 }

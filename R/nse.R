@@ -21,25 +21,25 @@ nse <- function(obs, sim, na.rm = T) {
     return(1 - ((colSums((x - y)^2))/(colSums((x - colMeans(y))^2))))
 }
 
-#' #' check dim
-#' #' 
-#' check_dim_ <- function(...){
-#'   arg_list <- list(...)
-#'   arg_class <- unlist(lapply(arg_list, class))
-#'   if (!all(arg_class == arg_class[1])) {
-#'     stop('Inputs are not with same class!')
-#'   }
-#'   arg_dim <- lapply(arg_list, dim)
-#'   if (all(unlist(lapply(arg_dim, is.null)))) {
-#'     arg_len <- unlist(lapply(arg_list, length))
-#'     return(all(arg_len == arg_len[1]))
-#'   } else {
-#'     return(all(unlist(lapply(arg_dim, function(x){all(x == arg_dim[[1]])}))))
-#'   }
-#'   
-#' }
+# check dim
+# 
+#check_dim_ <- function(...){
+#  arg_list <- list(...)
+#   arg_class <- unlist(lapply(arg_list, class))
+#   if (!all(arg_class == arg_class[1])) {
+#     stop('Inputs are not with same class!')
+#   }
+#   arg_dim <- lapply(arg_list, dim)
+#   if (all(unlist(lapply(arg_dim, is.null)))) {
+#     arg_len <- unlist(lapply(arg_list, length))
+#     return(all(arg_len == arg_len[1]))
+#  } else {
+#     return(all(unlist(lapply(arg_dim, function(x){all(x == arg_dim[[1]])}))))
+#  }
+#   
+#}
 
-#' check dim 
+#' Check if all the inputs are same in dimensions
 #' @param ... Objects to be checked
 check_dim_ <- function(...){
   arg_list <- list(...)
