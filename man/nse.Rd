@@ -10,6 +10,8 @@ nse(obs, sim, na.rm = T)
 \item{obs}{Numeric vector of matrix. Measured values}
 
 \item{sim}{Numeric vector of matrix. Predicted values}
+
+\item{na.rm}{a logical value indicating whether NA values should be stripped before the computation proceeds.}
 }
 \value{
 The Nash-Sutcliffe efficiency (NSE)

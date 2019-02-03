@@ -2,6 +2,7 @@ NULL
 #' Calculate the Nash-Sutcliffe efficiency (NSE)
 #' @param obs Numeric vector of matrix. Measured values
 #' @param sim Numeric vector of matrix. Predicted values
+#' @param na.rm a logical value indicating whether NA values should be stripped before the computation proceeds.
 #' @return The Nash-Sutcliffe efficiency (NSE)
 #' @references Nash, J. E., and J.V. Sutcliffe (1970): River flow forecasting through conceptual models. 1. a discussion of principles. Journal of Hydrology 10, 282–290.
 #' @export

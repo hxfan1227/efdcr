@@ -16,6 +16,7 @@ NULL
 #' A \code{data.frame}, or other object, will override the plot data.
 #' All objects will be fortified to produce a data frame.
 #' See \code{\link[ggplot2]{fortify}} for which variables will be created.
+#' @param stat Use to override the default connection
 #'
 #' @param position Position adjustment, either as a string, or the result of a call to a position adjustment function.
 #'

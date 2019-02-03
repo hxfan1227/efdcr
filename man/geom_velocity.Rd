@@ -23,6 +23,8 @@ A \code{data.frame}, or other object, will override the plot data.
 All objects will be fortified to produce a data frame.
 See \code{\link[ggplot2]{fortify}} for which variables will be created.}
 
+\item{stat}{Use to override the default connection}
+
 \item{position}{Position adjustment, either as a string, or the result of a call to a position adjustment function.}
 
 \item{na.rm}{If \code{False}, the default, missing values are removed with a warning.
