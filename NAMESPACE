@@ -3,6 +3,7 @@
 export(calibration_plot)
 export(col_format_water_level)
 export(dt_to_wq)
+export(efdc_nc_get_grid_dt)
 export(format_rfggrid)
 export(geom_velocity)
 export(nse)
