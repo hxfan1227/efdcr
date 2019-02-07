@@ -43,7 +43,12 @@ get_efdc_nc_dt <- function(filename, varname, wetdepth = 0.15){
   zbot_df_melt <- melt(zbot_df, value.name = 'ZBOT', na.rm = T)
   base_df <- merge(base_df, zbot_df_melt, by.x = c('Var2', 'Var3'), by.y = c('Var1', 'Var2'), all.y = T)
   # add WSEL to see if the cell is wet or not
-  cat('Finish reading bottom elevation (ZBOT)...\n', 'Reading water surface elevation (WSEL)...\n', sep = '')
+  cat('Finish reading bottom elevation (ZBOT)!\n')
+  if (varname == 'ZBOT'){
+    setDT(base_df)
+    return(base_df)
+  }
+  cat('Reading water surface elevation (WSEL)...\n')
   wsel_df <- ncvar_get(nc, 'WSEL')
   wsel_df_melt <- melt(wsel_df, value.name = 'WSEL', na.rm = T)
   setDT(wsel_df_melt)
@@ -52,7 +57,7 @@ get_efdc_nc_dt <- function(filename, varname, wetdepth = 0.15){
   base_df[, WETFLAG := ifelse((WSEL - ZBOT) > wetdepth, 1, NA)]
   base_df <- na.omit(base_df, cols = 'WETFLAG')
   cat('Reading water surface elevation (WSEL)\n', 'Reading variables...\n', sep = '')
-  if (varname %in% c('ZBOT', 'WSEL')) {
+  if (varname == 'WSEL') {
     setDT(base_df)
     return(base_df)
   } else{
