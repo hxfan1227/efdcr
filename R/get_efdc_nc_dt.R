@@ -75,7 +75,7 @@ get_efdc_nc_dt <- function(filename, varname, wetdepth = 0.15){
 }
 NULL
 #' List the variable names in the NetCDF file.
-#' @inheritParams efdc_nc_get_grid_dt
+#' @inheritParams get_efdc_nc_dt
 #' @export
 has_variable <- function(filename){
   nc <- nc_open(filename)
