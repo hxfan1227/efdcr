@@ -4,23 +4,36 @@
 \alias{plot_efdc_ts}
 \title{Generate calibration plots for EFDC exported data.}
 \usage{
-plot_efdc_ts(fname, ts_num, draw = T, obs_col = "red",
-  mod_col = "black", y_lab = NULL, free_scale = T, ...)
+plot_efdc_ts(fname, ts_num, draw = T, n_col = 1, obs_col = "red",
+  mod_col = "black", obs_shape = 1, mod_size = 0.8, y_lab = NULL,
+  x_lim = NULL, y_lim = NULL, id_level, date_interval = "1 day", ...)
 }
 \arguments{
 \item{fname}{Character. The name of the \code{.dat} file exported by EFDC.}
 
-\item{ts_num}{Number. The number of the time series to plot.}
+\item{ts_num}{Numeric. The number of the time series to plot.}
 
 \item{draw}{Logical. If \code{TRUE}, draw the figure.}
+
+\item{n_col}{Numeric. The number of the facet column.}
 
 \item{obs_col}{Character. The colour of the observed data.}
 
 \item{mod_col}{Character. The colour of the modeled data.}
 
+\item{obs_shape}{Numeric. Shape of the observed data.}
+
+\item{mod_size}{Numeric. (Line) Size of the modeled data.}
+
 \item{y_lab}{Character. Label of the Y axis.}
 
-\item{free_scale}{Logical. \code{TRUE} set free scale when facetting.}
+\item{x_lim}{Date. Limits for x axis.}
+
+\item{y_lim}{Numeric. Limits for y axis.}
+
+\item{id_level}{Character. The level of IDs.}
+
+\item{date_interval}{Increment of the date sequence.}
 
 \item{...}{Not used.}
 }
