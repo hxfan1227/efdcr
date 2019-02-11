@@ -1,7 +1,7 @@
 Package: efdcr
 Type: Package
 Title: Environmental Fluid Dynamics Code (EFDC) Toolbox in R
-Version: 0.3.0
+Version: 0.4.0
 Author: Hongxiang Fan
 Maintainer: Hongxiang Fan <fanhongxiang13@mails.ucas.ac.cn>
 Description: efdcr provides useful tools for data preparation for Environmental Fluid Dynamics Code (EFDC) .
