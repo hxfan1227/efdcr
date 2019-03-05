@@ -21,7 +21,8 @@ NULL
 #' @param y_lab Character. Label of the Y axis.
 #' @param x_lim Date. Limits for x axis.
 #' @param y_lim Numeric. Limits for y axis.
-#' @param id_level Character. The level of IDs.
+#' @param id_level Character. The levels of IDs.
+#' @param id_label Character. The labels of IDs
 #' @param date_interval Increment of the date sequence.
 #' @param ... Not used.
 #' @export
@@ -69,7 +70,11 @@ plot_efdc_ts <- function(fname,
     dates_ <- seq(min(as.Date(calibration_dt$Date)), max(as.Date(calibration_dt$Date)), by = date_interval)
   }
   if(!missing(id_level)){
-    calibration_dt$ID <- factor(calibration_dt$ID, levels = id_level)
+    if(!missing(id_label)){
+      calibration_dt$ID <- factor(calibration_dt$ID, levels = id_level, labels = id_label)
+    } else {
+      calibration_dt$ID <- factor(calibration_dt$ID, levels = id_level)
+    }
   }
   mod_dt <- calibration_dt[Type != 'Data']
   obs_dt <- calibration_dt[Type == 'Data']
