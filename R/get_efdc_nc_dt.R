@@ -1,4 +1,5 @@
 #' @import ncdf4
+#' @import reshape2
 #' @importFrom ncdf4 nc_open ncvar_get
 #' @import data.table
 #' @importFrom data.table melt setDT
@@ -54,7 +55,7 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
     cat('Reading bottom elevation (ZBOT)...\n')
   }
   zbot_df <- ncvar_get(nc, 'ZBOT')
-  zbot_df_melt <- setDT(melt(zbot_df, value.name = 'ZBOT', na.rm = T))
+  zbot_df_melt <- setDT(reshape2::melt(zbot_df, value.name = 'ZBOT', na.rm = T))
   if (verbose) {
     cat('Finish reading bottom elevation (ZBOT)!\n')
   }
@@ -74,7 +75,7 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
   }
   if (length(fnames_) == 1){
     wsel_df <- ncvar_get(nc, 'WSEL')
-    wsel_df_melt <- setDT(melt(wsel_df, value.name = 'WSEL'))
+    wsel_df_melt <- setDT(reshape2::melt(wsel_df, value.name = 'WSEL'))
     colnames(wsel_df_melt) <- c('Var1', 'Var2', 'Day', 'WSEL')
     var_df <- merge(zbot_df_melt, wsel_df_melt, by.x = c('Var1', 'Var2'), by.y = c('Var1', 'Var2'), all.x = T)
     var_df[, WETFLAG := ifelse((WSEL - ZBOT) > wet_depth | !is.na(WSEL), 1, NA)]
@@ -98,7 +99,7 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
       cat('Reading variables ', var_name, ' ...\n', sep = '')
     }
     var_df_ <- ncvar_get(nc, var_name)
-    var_df_melt_ <- setDT(melt(var_df_, value.name = var_name))
+    var_df_melt_ <- setDT(reshape2::melt(var_df_, value.name = var_name))
     colnames(var_df_melt_) <- c('Var1', 'Var2', 'Day', var_name)
     var_df <- merge(var_df, var_df_melt_, by = c('Var1', 'Var2', 'Day'), all.x = T)
     if (remove_dry){
@@ -114,8 +115,8 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
   } else { # comapre 2 files
     wsel_df1 <- ncvar_get(nc_open(fnames_[1]), 'WSEL')
     wsel_df2 <- ncvar_get(nc_open(fnames_[2]), 'WSEL')
-    wsel_df1_melt <- setDT(melt(wsel_df1, value.name = 'WSEL'))
-    wsel_df2_melt <- setDT(melt(wsel_df2, value.name = 'WSEL'))
+    wsel_df1_melt <- setDT(reshape2::melt(wsel_df1, value.name = 'WSEL'))
+    wsel_df2_melt <- setDT(reshape2::melt(wsel_df2, value.name = 'WSEL'))
     colnames(wsel_df1_melt) <- c('Var1', 'Var2', 'Day', 'WSEL1')
     colnames(wsel_df2_melt) <- c('Var1', 'Var2', 'Day', 'WSEL2')
     var_df <- merge(zbot_df_melt, wsel_df1_melt, by = c('Var1', 'Var2'), all.x = T)
@@ -124,12 +125,12 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
       cat('Finish reading water surface elevation (WSEL)\n', 'Comparing Models...\n', sep = '')
     }
     var_df_ <- ncvar_get(nc_open(fnames_[2]), var_name) - ncvar_get(nc_open(fnames_[1]), var_name)
-    var_df_melt_ <- setDT(melt(var_df_, value.name = 'DIFF'))
+    var_df_melt_ <- setDT(reshape2::melt(var_df_, value.name = 'DIFF'))
     colnames(var_df_melt_) <- c('Var1', 'Var2', 'Day', 'M2-M1')
     var_df1_ <- ncvar_get(nc_open(fnames_[1]), var_name)
     var_df2_ <- ncvar_get(nc_open(fnames_[2]), var_name)
-    var_df1_melt_ <- setDT(melt(var_df1_, value.name = 'V1'))
-    var_df2_melt_ <- setDT(melt(var_df2_, value.name = 'V2'))
+    var_df1_melt_ <- setDT(reshape2::melt(var_df1_, value.name = 'V1'))
+    var_df2_melt_ <- setDT(reshape2::melt(var_df2_, value.name = 'V2'))
     colnames(var_df1_melt_) <- c('Var1', 'Var2', 'Day', 'V1')
     colnames(var_df2_melt_) <- c('Var1', 'Var2', 'Day', 'V2')
     var_df <- merge(var_df, var_df1_melt_, by = c('Var1', 'Var2', 'Day'))
@@ -146,15 +147,6 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
       return(var_df)
     }
   }
-  
-  
-  
-  if (length(fnames_) == 1) {
-    var_df <- ncvar_get(nc, var_name)
-  } else {
-    
-  }
-  
   base_df <- na.omit(base_df, cols = 'WETFLAG')
   if (verbose) {
     cat('Finish!\n')
@@ -180,18 +172,18 @@ get_efdc_nc_coordinates <- function(nc, simplify = T){
   lon_bnds <- ncvar_get(nc, 'lon_bnds')
   # longitudes of 4 corners of the grid
   lat_bnds <- ncvar_get(nc, 'lat_bnds')
-  lon_melt <- setDT(melt(lon))
-  lat_melt <- setDT(melt(lat))
-  lon_bnds_melt <- setDT(melt(lon_bnds, value.name = 'lon'))
-  lat_bnds_melt <- setDT(melt(lat_bnds, value.name = 'lat'))
+  lon_melt <- setDT(reshape2::melt(lon))
+  lat_melt <- setDT(reshape2::melt(lat))
+  lon_bnds_melt <- setDT(reshape2::melt(lon_bnds, value.name = 'lon'))
+  lat_bnds_melt <- setDT(reshape2::melt(lat_bnds, value.name = 'lat'))
   lon_lat_df <- merge(lon_bnds_melt, lat_bnds_melt, by = c('Var2', 'Var3', 'Var1'))
   setDT(lon_lat_df)
   lon_lat_df <- na.omit(lon_lat_df)
   n_grids <- sum(!is.na(lon))
   lon_lat_df[, id := rep(1:n_grids, each = 4)]
   # merge center corrdinates:
-  lon_melt <- setDT(melt(lon, value.name = 'clon'))
-  lat_melt <- setDT(melt(lat, value.name = 'clat'))
+  lon_melt <- setDT(reshape2::melt(lon, value.name = 'clon'))
+  lat_melt <- setDT(reshape2::melt(lat, value.name = 'clat'))
   base_df <- merge(lon_lat_df, lon_melt, by.x = c('Var2', 'Var3'), by.y = c('Var1', 'Var2'))
   base_df <- merge(base_df, lat_melt, by.x = c('Var2', 'Var3'), by.y = c('Var1', 'Var2'))
   if (simplify){
