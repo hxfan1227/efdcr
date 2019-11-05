@@ -39,7 +39,7 @@ NULL
 #' @export
 geom_velocity <- function(mapping = NULL, data = NULL, stat = "identity",
                         position = "identity", na.rm = FALSE, show.legend = NA,
-                        inherit.aes = TRUE, scale = 1,...) {
+                        inherit.aes = TRUE, scale = 1, arrow_scale = 0.5, ...) {
   layer(geom = GeomVelocity,
         mapping = mapping,
         data = data,
@@ -47,7 +47,7 @@ geom_velocity <- function(mapping = NULL, data = NULL, stat = "identity",
         position = position,
         show.legend = show.legend,
         inherit.aes = inherit.aes,
-        params = list(na.rm = na.rm, scale = scale, ...)
+        params = list(na.rm = na.rm, scale = scale, arrow_scale = arrow_scale, ...)
   )
 }
 NULL
@@ -56,7 +56,7 @@ GeomVelocity <- ggplot2::ggproto("GeomVelocity", ggplot2::Geom,
                                required_aes = c("x", "y", "u", "v"),
                                default_aes = ggplot2::aes(color = "black", scale = 1, size = 0.2),
                                draw_key = ggplot2::draw_key_polygon,
-                               draw_panel = function(data, panel_scales, coord, scale = 1) {
+                               draw_panel = function(data, panel_scales, coord, scale = 1, arrow_scale = 0.5) {
                                  coords <- coord$transform(data, panel_scales)
                                  Mmag <- max(sqrt(coords$u^2 + coords$v^2))
                                  coords$mag0 <- sqrt(coords$u^2 + coords$v^2)
@@ -65,7 +65,7 @@ GeomVelocity <- ggplot2::ggproto("GeomVelocity", ggplot2::Geom,
                                  coords$dx <- with(coords, cos(angle)*mag)*scale
                                  coords$dy <- with(coords, sin(angle)*mag)*scale
                                  coords <- coords[which(coords$mag0 >= 1e-3),] # don't draw if velocity == 0
-                                 arrow.len <- grid::convertUnit(unit(min(coords$mag0) * 0.5, "npc"), "cm")
+                                 arrow.len <- grid::convertUnit(unit(min(coords$mag0) * arrow_scale, "npc"), "cm")
                                  xx <- grid::unit.c(unit(coords$x, "npc"),
                                               unit(coords$x, "npc") + unit(coords$dx, "snpc"))
                                  yy <- grid::unit.c(unit(coords$y, "npc"),
