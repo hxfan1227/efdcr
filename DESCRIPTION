@@ -25,3 +25,7 @@ Imports:
 RoxygenNote: 6.1.1
 URL: https://github.com/hxfan1227/efdcr
 BugReports: https://github.com/hxfan1227/efdcr/issues
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
