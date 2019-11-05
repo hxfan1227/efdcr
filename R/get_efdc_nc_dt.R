@@ -102,6 +102,9 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
     var_df_melt_ <- setDT(reshape2::melt(var_df_, value.name = var_name))
     colnames(var_df_melt_) <- c('Var1', 'Var2', 'Day', var_name)
     var_df <- merge(var_df, var_df_melt_, by = c('Var1', 'Var2', 'Day'), all.x = T)
+    if (verbose) {
+      cat('Finish reading variables ', var_name, ' !\n', sep = '')
+    }
     if (remove_dry){
       var_df <- na.omit(var_df, cols = 'WETFLAG')
     }
