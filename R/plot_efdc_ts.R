@@ -2,6 +2,7 @@
 #'@importFrom ggplot2 %+replace%
 #'@import data.table
 #'@import hydroGOF
+#'@import purrr
 #'@importFrom data.table :=
 #'@importFrom readr read_lines 
 #'@importFrom lubridate ddays
@@ -24,6 +25,7 @@ NULL
 #' @param id_level Character. The levels of IDs.
 #' @param id_label Character. The labels of IDs
 #' @param date_interval Increment of the date sequence.
+#' @param begin_date The begin date
 #' @param ... Not used.
 #' @export
 plot_efdc_ts <- function(fname, 
@@ -40,22 +42,28 @@ plot_efdc_ts <- function(fname,
                          id_level,
                          id_label,
                          date_interval = '1 day',
+                         begin_date,
                          ...){
-  file_header <- read_lines(fname, skip = 11, n_max = 1)
-  base_date <- as.Date(str_extract_all(file_header, '\\d{4}/\\d{1,2}/\\d{1,2}', simplify = T)[1,1])
+  file_header <- readr::read_lines(fname, skip = 11, n_max = 1)
+  # When exporting timeseries data from EE8.4 with Julian format, the Base Date line (L12) is somehow missing.
+  base_date_list <- purrr::safely(as.Date, otherwise = as.Date(begin_date))(str_extract_all(file_header, '\\d{4}/\\d{1,2}/\\d{1,2}', simplify = T)[1,1])
+  base_date <- base_date_list$result
   xlim_ <- x_lim
   ylim_ <- y_lim
   data_list <- list()
   data_to_read <- 0
   for (i in 1:ts_num){
-    data_label <- str_split_fixed(read_lines(fname, skip = 12 + data_to_read + i, n_max = 1), '\t', 2)[1, 2]
+    # When exporting timeseries data from EE8.4 with Julian format, the Base Date line (L12) is somehow missing. So the skip line should be 11
+    data_label <- str_split_fixed(read_lines(fname, skip = ifelse(is.null(base_date_list$error), 12, 11) + data_to_read + i, n_max = 1), '\t', 2)[1, 2]
     id_ <- str_split_fixed(data_label, '-', 2)[1, 1]
     type_ <- str_split_fixed(data_label, '-', 2)[1, 2]
     if (type_ != 'Data'){
       type_ <- 'Model'
     }
-    data_length <- as.numeric(str_split_fixed(read_lines(fname, skip = 12 + data_to_read + i, n_max = 1), '\t', 2)[1, 1])
-    dt <- data.table::fread(fname, skip = 13 + data_to_read + i, header = F, nrows = data_length, col.names = c('RefDate', 'Value'))
+    # When exporting timeseries data from EE8.4 with Julian format, the Base Date line (L12) is somehow missing. So the skip line should be 11
+    data_length <- as.numeric(str_split_fixed(read_lines(fname, skip = ifelse(is.null(base_date_list$error), 12, 11) + data_to_read + i, n_max = 1), '\t', 2)[1, 1])
+    # When exporting timeseries data from EE8.4 with Julian format, the Base Date line (L12) is somehow missing. So the skip line should be 12
+    dt <- data.table::fread(fname, skip = ifelse(is.null(base_date_list$error), 13, 12) + data_to_read + i, header = F, nrows = data_length, col.names = c('RefDate', 'Value'))
     dt[, ':='(ID   = as.factor(id_), 
               Type = type_)]
     data_list[[i]] <-  dt
