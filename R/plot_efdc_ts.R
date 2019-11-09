@@ -44,6 +44,8 @@ plot_efdc_ts <- function(fname,
                          date_interval = '1 day',
                          begin_date,
                          ...){
+  fname <- stringr::str_replace_all(fname, '%23', '#')
+  fname <- stringr::str_remove_all(fname, 'file:///')
   file_header <- readr::read_lines(fname, skip = 11, n_max = 1)
   # When exporting timeseries data from EE8.4 with Julian format, the Base Date line (L12) is somehow missing.
   base_date_list <- purrr::safely(as.Date, otherwise = as.Date(begin_date))(str_extract_all(file_header, '\\d{4}/\\d{1,2}/\\d{1,2}', simplify = T)[1,1])
