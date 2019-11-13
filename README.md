@@ -21,7 +21,7 @@ You can Install the latest development version of efdcr from [GitHub](www.github
 if (!require("devtools")) {
   install.packages("devtools")
 }
-devtools::install_github("stan-dev/bayesplot")
+devtools::install_github("hxfan1227/efdcr")
 ```
 
 Installation from GitHub does not include the vignettes by default because they take some time to build.
