@@ -98,32 +98,32 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can Install the latest development version of efdcr from <a href="www.github.com">GitHub</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"devtools"</span>)) {</a>
-<a class="sourceLine" id="cb1-2" title="2">  <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
-<a class="sourceLine" id="cb1-3" title="3">}</a>
-<a class="sourceLine" id="cb1-4" title="4">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"stan-dev/bayesplot"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="st">"devtools"</span>)) {
+  <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"devtools"</span>)
+}
+devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"hxfan1227/efdcr"</span>)</code></pre></div>
 <p>Installation from GitHub does not include the vignettes by default because they take some time to build.</p>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>This is a basic example which shows you how to solve a common problem:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(efdcr)</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="co"># use has_variable() to check wether the .nc file has variables</span></a>
-<a class="sourceLine" id="cb2-3" title="3"></a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="kw"><a href="reference/get_efdc_nc_dt.html">has_variable</a></span>(<span class="st">'water_quality.nc'</span>)</a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="co">#&gt; The file has 67 variables</span></a>
-<a class="sourceLine" id="cb2-6" title="6"></a>
-<a class="sourceLine" id="cb2-7" title="7"><span class="co"># use get_efdc_nc_dt() to extract variables in the .nc file</span></a>
-<a class="sourceLine" id="cb2-8" title="8"></a>
-<a class="sourceLine" id="cb2-9" title="9">dye_dt &lt;-<span class="st"> </span><span class="kw"><a href="reference/get_efdc_nc_dt.html">get_efdc_nc_dt</a></span>(<span class="st">'G:/wq.nc'</span>, <span class="dt">var_name =</span> <span class="st">'DYE'</span>)</a>
-<a class="sourceLine" id="cb2-10" title="10"></a>
-<a class="sourceLine" id="cb2-11" title="11"><span class="co">#&gt; Reading bottom elevation (ZBOT)...</span></a>
-<a class="sourceLine" id="cb2-12" title="12"><span class="co">#&gt; Finish reading bottom elevation (ZBOT)!</span></a>
-<a class="sourceLine" id="cb2-13" title="13"><span class="co">#&gt; Reading water surface elevation (WSEL)...</span></a>
-<a class="sourceLine" id="cb2-14" title="14"><span class="co">#&gt; Finish reading water surface elevation (WSEL)</span></a>
-<a class="sourceLine" id="cb2-15" title="15"><span class="co">#&gt; Reading variables DYE ...</span></a>
-<a class="sourceLine" id="cb2-16" title="16"><span class="co">#&gt; Finish reading variables DYE !</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(efdcr)
+<span class="co"># use has_variable() to check wether the .nc file has variables</span>
+
+<span class="kw"><a href="reference/get_efdc_nc_dt.html">has_variable</a></span>(<span class="st">'water_quality.nc'</span>)
+<span class="co">#&gt; The file has 67 variables</span>
+
+<span class="co"># use get_efdc_nc_dt() to extract variables in the .nc file</span>
+
+dye_dt &lt;-<span class="st"> </span><span class="kw"><a href="reference/get_efdc_nc_dt.html">get_efdc_nc_dt</a></span>(<span class="st">'G:/water_quality.nc'</span>, <span class="dt">var_name =</span> <span class="st">'DYE'</span>)
+
+<span class="co">#&gt; Reading bottom elevation (ZBOT)...</span>
+<span class="co">#&gt; Finish reading bottom elevation (ZBOT)!</span>
+<span class="co">#&gt; Reading water surface elevation (WSEL)...</span>
+<span class="co">#&gt; Finish reading water surface elevation (WSEL)</span>
+<span class="co">#&gt; Reading variables DYE ...</span>
+<span class="co">#&gt; Finish reading variables DYE !</span></code></pre></div>
 </div>
 </div>
   </div>
