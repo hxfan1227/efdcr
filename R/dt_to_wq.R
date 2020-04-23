@@ -9,19 +9,21 @@ NULL
 #' @param src.dt A \code{data.table} object. If a \code{data.frame} object is provided, it will be
 #' converted to a \code{data.table} object using \link[data.table]{setDT}.
 #' @param path Character. A character indicating the path of the \code{.wq} files to be saved.
-#' @param start.date Character. A character of suspected date
-#' @param end.date Character. A character of suspected date
+#' @param start.date Character. A character of desired date ('2000-01-01')
+#' @param end.date Character. A character of desired date ('2000-01-01')
 #' @export
 
-dt_to_wq <- function(measure.vars, src.dt, path, start.date, end.date){
+dt_to_wq <- function(measure.vars, src.dt, path, start.date, end.date, interval = '1 day'){
   if(!is.data.table(src.dt)){
     setDT(src.dt)
   }
+  date.dt <- data.table(Date = seq.Date(lubridate::ymd(start.date), lubridate::ymd(end.date), by = interval))
   if ("Date" %in% colnames(src.dt)){
-    src.dt <- src.dt[Date %between% c(lubridate::ymd(start.date),lubridate::ymd(end.date)), .SD, by = Date]
+    src.dt <- src.dt[Date %between% c(lubridate::ymd(start.date),lubridate::ymd(end.date)), .SD]
   } else {
     warning("No Date column found! Writing all data.")
   }
+  src.dt <- merge(date.dt, src.dt, by = 'Date', all = T)
   all.char <- all(is.character(measure.vars))
   all.num <- all(is.numeric(measure.vars))
   if(all.char){
@@ -50,15 +52,18 @@ NULL
 #' @param measure.var_ vector of measure variables.
 #' @param src.dt_ A \code{data.table} object.
 #' @param path_ Character. A character indicating the path of the \code{.wq} files to be saved.
+#' @export
 write_wq <- function(measure.var_, src.dt_, path_){
   dst.file <- file.path(path_, paste0(measure.var_, ".wq"))
+  src.dt_[, No:= seq(0, NROW(src.dt_) - 1)]
+  src.dt_ <- na.omit(src.dt_)
   write(paste(NROW(src.dt_[, ..measure.var_]), measure.var_), file = dst.file)
-  write.table(src.dt_[, ..measure.var_],
+  write.table(src.dt_[, c('No', measure.var_), with = F],
               file = dst.file,
               sep = " ",
               append = T,
-              row.names = seq(0, NROW(src.dt_[, ..measure.var_]) - 1),
               col.names = F,
+              row.names = F,
               quote = F,
               na = '')
 }
