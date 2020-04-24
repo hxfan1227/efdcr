@@ -10,7 +10,7 @@ a_ply(vars, 1, dt_to_wq,
       .progress = 'text')
 
 flist <- list.files('D:\\PhD_Models\\2020', pattern = '^cwqsr', full.names = T)
-cwqsrs <- c(paste0('cwqsr', 0, 1:9, '.inp'), paste0('cwqsr', 10:21, '.inp'))
+
 cwqsrs_h <- alply(1:21, 1, function(x){readLines(flist[x], n = 15)})
 
 TP_flist <- list.files(path = 'D:\\', pattern = '^TP', full.names = T)
