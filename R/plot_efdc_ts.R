@@ -2,7 +2,7 @@
 #'@importFrom ggplot2 %+replace%
 #'@import data.table
 #'@import hydroGOF
-#'@import purrr
+#'@importFrom purrr safely
 #'@importFrom data.table :=
 #'@importFrom readr read_lines 
 #'@importFrom lubridate ddays
