@@ -16,17 +16,18 @@ Imports:
     plyr,
     lubridate,
     XLConnect,
-    XLConnectJars,
     ggplot2,
     readr,
     ncdf4,
     hydroGOF,
     reshape2,
     purrr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 URL: https://github.com/hxfan1227/efdcr
 BugReports: https://github.com/hxfan1227/efdcr/issues
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)

@@ -4,8 +4,12 @@
 \alias{theme_efdc}
 \title{The theme of the model plot}
 \usage{
-theme_efdc(base_size = 11, base_family = "",
-  base_line_size = base_size/22, base_rect_size = base_size/22)
+theme_efdc(
+  base_size = 11,
+  base_family = "",
+  base_line_size = base_size/22,
+  base_rect_size = base_size/22
+)
 }
 \arguments{
 \item{base_size}{Base font size.}

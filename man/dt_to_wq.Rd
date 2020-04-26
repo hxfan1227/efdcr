@@ -4,7 +4,7 @@
 \alias{dt_to_wq}
 \title{Convert csv data files into wq formats}
 \usage{
-dt_to_wq(measure.vars, src.dt, path, start.date, end.date)
+dt_to_wq(measure.vars, src.dt, path, start.date, end.date, interval = "1 day")
 }
 \arguments{
 \item{measure.vars}{vector of measure variables. Can be integer (corresponding measure column numbers)
@@ -15,9 +15,9 @@ converted to a \code{data.table} object using \link[data.table]{setDT}.}
 
 \item{path}{Character. A character indicating the path of the \code{.wq} files to be saved.}
 
-\item{start.date}{Character. A character of suspected date}
+\item{start.date}{Character. A character of desired date ('2000-01-01')}
 
-\item{end.date}{Character. A character of suspected date}
+\item{end.date}{Character. A character of desired date ('2000-01-01')}
 }
 \description{
 Convert csv data files into wq formats

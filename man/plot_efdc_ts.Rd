@@ -4,9 +4,24 @@
 \alias{plot_efdc_ts}
 \title{Generate calibration plots for EFDC exported data.}
 \usage{
-plot_efdc_ts(fname, ts_num, draw = T, n_col = 1, obs_col = "red",
-  mod_col = "black", obs_shape = 1, mod_size = 0.8, y_lab = NULL,
-  x_lim = NULL, y_lim = NULL, id_level, date_interval = "1 day", ...)
+plot_efdc_ts(
+  fname,
+  ts_num,
+  draw = T,
+  n_col = 1,
+  obs_col = "red",
+  mod_col = "black",
+  obs_shape = 1,
+  mod_size = 0.8,
+  y_lab = NULL,
+  x_lim = NULL,
+  y_lim = NULL,
+  id_level,
+  id_label,
+  date_interval = "1 day",
+  begin_date,
+  ...
+)
 }
 \arguments{
 \item{fname}{Character. The name of the \code{.dat} file exported by EFDC.}
@@ -31,9 +46,13 @@ plot_efdc_ts(fname, ts_num, draw = T, n_col = 1, obs_col = "red",
 
 \item{y_lim}{Numeric. Limits for y axis.}
 
-\item{id_level}{Character. The level of IDs.}
+\item{id_level}{Character. The levels of IDs.}
+
+\item{id_label}{Character. The labels of IDs}
 
 \item{date_interval}{Increment of the date sequence.}
+
+\item{begin_date}{The begin date}
 
 \item{...}{Not used.}
 }

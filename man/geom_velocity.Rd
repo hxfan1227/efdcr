@@ -4,9 +4,18 @@
 \alias{geom_velocity}
 \title{Geom for plotting velocity vectors.}
 \usage{
-geom_velocity(mapping = NULL, data = NULL, stat = "identity",
-  position = "identity", na.rm = FALSE, show.legend = NA,
-  inherit.aes = TRUE, scale = 1, ...)
+geom_velocity(
+  mapping = NULL,
+  data = NULL,
+  stat = "identity",
+  position = "identity",
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE,
+  scale = 1,
+  arrow_scale = 0.5,
+  ...
+)
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2]{aes}}
