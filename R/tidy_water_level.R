@@ -1,5 +1,4 @@
 #' @import XLConnect
-#' @import XLConnectJars
 #' @import data.table
 #' @importFrom stringr str_detect
 NULL
