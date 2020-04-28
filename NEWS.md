@@ -1,3 +1,8 @@
+# efdcr 0.4.1
+
+* This is the first tested release version of efdcr.
+* Documents are still under development.
+
 # efdcr 0.4.0.9002
 
 * The package is still under development.
