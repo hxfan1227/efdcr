@@ -82,11 +82,7 @@
 
       
 
-      </header><script src="pre_process_files/htmlwidgets-1.5.1/htmlwidgets.js"></script><script src="pre_process_files/jquery-1.12.4/jquery.min.js"></script><link href="pre_process_files/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-<script src="pre_process_files/datatables-binding-0.13/datatables.js"></script><link href="pre_process_files/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="pre_process_files/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet">
-<script src="pre_process_files/dt-core-1.10.20/js/jquery.dataTables.min.js"></script><link href="pre_process_files/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet">
-<script src="pre_process_files/crosstalk-1.1.0.1/js/crosstalk.min.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Pre-Processing with efdcr</h1>
@@ -104,13 +100,26 @@
 <a href="#pre-process-with-efdcr" class="anchor"></a>Pre-process with <code>efdcr</code>
 </h2>
 <p>The time series data used by EEMS or EFDC is usually saved in <code>.wq</code> format, which is a text file with first line be the number of data points and the other lines be the time series data. The data lines will be repeated for all data points. Frankly, it is a simple and clear data structure but not tidy. Hence I design the <code><a href="../reference/dt_to_wq.html">dt_to_wq()</a></code> function to handle that issue.</p>
+<div id="load-required-packages" class="section level3">
+<h3 class="hasAnchor">
+<a href="#load-required-packages" class="anchor"></a>Load required packages</h3>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">efdcr</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">data.table</span>)</pre></body></html></div>
+</div>
 <div id="hydrological-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#hydrological-data" class="anchor"></a>Hydrological Data</h3>
 <p>Below is the <code>tidy</code> hydrological data, with <code>Date</code> column as the index. I suggest you store your hydrological data in this kind of format and then use the <code><a href="../reference/dt_to_wq.html">dt_to_wq()</a></code> function to convert it into <code>.wq</code> files.</p>
-<div id="htmlwidget-db8abfa509775667c66e" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-db8abfa509775667c66e">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"],["1953-01-01","1953-01-02","1953-01-03","1953-01-04","1953-01-05","1953-01-06","1953-01-07","1953-01-08","1953-01-09","1953-01-10","1953-01-11","1953-01-12","1953-01-13","1953-01-14","1953-01-15","1953-01-16","1953-01-17","1953-01-18","1953-01-19","1953-01-20","1953-01-21","1953-01-22","1953-01-23","1953-01-24","1953-01-25","1953-01-26","1953-01-27","1953-01-28","1953-01-29","1953-01-30","1953-01-31"],[511,625,619,591,524,480,450,428,405,398,386,367,377,380,366,360,380,395,352,350,372,380,440,482,548,610,717,1330,2300,2390,2270],[96,84,80.3,75.2,92,88,86,84,84,82,78.5,70.1,66.7,68.4,70.1,70.1,76.9,80.3,82,84,88,121,152,133,127,190,752,1250,734,453,334],[75.6,69.3,67.2,63,61,57,55,57,55,55,55,55,53,55,55,59,63,77.7,86.1,96.6,103,105,109,109,124,337,1580,1620,791,461,355],[39.6,40.6,38.8,36.8,33.6,34.8,33.2,34,33.6,30.9,30.9,31.3,31.7,32.1,32.8,34,35.6,35.6,35.6,36,37.2,36,36.8,36.8,59.4,407.9,681,396,240.5,173.8,142.7],[74.25928,76.5436,76.5436,71.97496,69.69064,69.69064,67.40632,67.40632,67.40632,65.122,62.83768,62.83768,60.55336,62.83768,67.40632,69.69064,62.83768,69.69064,69.69064,69.69064,76.5436,76.5436,76.5436,74.25928,95.19888,495.3356,815.1404,415.3844,235.68456,167.15496,154.5912]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Date<\/th>\n      <th>Ganjiang_Q<\/th>\n      <th>Fuhe_Q<\/th>\n      <th>Xinjiang_Q<\/th>\n      <th>Raohe_Q<\/th>\n      <th>Xiushui_Q<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script><p>Now we can convert it to <code>.wq</code> files.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="../reference/dt_to_wq.html">dt_to_wq</a></span>(<span class="kw">measure.vars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Ganjiang_Q'</span>, <span class="st">'Fuhe_Q'</span>), <span class="kw">src.dt</span> <span class="kw">=</span> <span class="no">PYL_Hydro</span>, <span class="kw">path</span> <span class="kw">=</span> <span class="st">'D:'</span>,
+<pre><code>#&gt;          Date Ganjiang_Q Fuhe_Q Xinjiang_Q Raohe_Q Xiushui_Q
+#&gt; 1: 1953-01-01        511   96.0       75.6    39.6  74.25928
+#&gt; 2: 1953-01-02        625   84.0       69.3    40.6  76.54360
+#&gt; 3: 1953-01-03        619   80.3       67.2    38.8  76.54360
+#&gt; 4: 1953-01-04        591   75.2       63.0    36.8  71.97496
+#&gt; 5: 1953-01-05        524   92.0       61.0    33.6  69.69064
+#&gt; 6: 1953-01-06        480   88.0       57.0    34.8  69.69064</code></pre>
+<p>Now we can convert it to <code>.wq</code> files.</p>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/dt_to_wq.html">dt_to_wq</a></span>(<span class="kw">measure.vars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Ganjiang_Q'</span>, <span class="st">'Fuhe_Q'</span>), <span class="kw">src.dt</span> <span class="kw">=</span> <span class="no">hydro_data</span>, <span class="kw">path</span> <span class="kw">=</span> <span class="st">'D:'</span>,
          <span class="kw">start.date</span> <span class="kw">=</span> <span class="st">'1953-01-01'</span>, <span class="kw">end.date</span> <span class="kw">=</span> <span class="st">'1953-01-20'</span>, <span class="kw">interval</span> <span class="kw">=</span> <span class="st">'1 day'</span>)</pre></body></html></div>
 <p>Then you will find 2 <code>.wq</code> files in your path (‘D:’ in this case). After that you can use the <code>import</code> button in EEMS when setting the boundaries. It will save you much time.</p>
 </div>
@@ -119,8 +128,152 @@
 <a href="#water-quality-data" class="anchor"></a>Water quality data</h3>
 <p>Compared to other boundaires, prepare the water quality boundaries (i.e., cwqsrs01-21.inp) is the most trival thing when buidling a water enviroment model. However, the EEMS seems to have bugs in reading the water quality boundaies, i.e., it can not import the cwqsrsXX.inp files at once. Consequently, I come up with the <code><a href="../reference/set_wqbc.html">set_wqbc()</a></code> function. To use the <code><a href="../reference/set_wqbc.html">set_wqbc()</a></code> function, you should first convert your water quality data to <code>.wq</code> files with the <code><a href="../reference/dt_to_wq.html">dt_to_wq()</a></code> function. After that you may easily prepare the 21 input files required by EEMS.</p>
 <p>When use the <code><a href="../reference/dt_to_wq.html">dt_to_wq()</a></code> function with water quality data, you should store your water quality data in the format below:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="../reference/set_wqbc.html">set_wqbc</a></span>(<span class="kw">wq_path</span> <span class="kw">=</span> <span class="st">'D:/wqs'</span>, <span class="kw">cwqsrs_path</span> <span class="kw">=</span> <span class="st">'D:/cwqsrs'</span>)</pre></body></html></div>
-<p>The <code>efdcr</code> package is mainly used for reading and visualizing the modeling results exported by the EEMS. Currently, only the <code>.nc</code> files exported by EEMS is supported.</p>
+<pre><code>#&gt;          Date     STN   DO    TP COD
+#&gt; 1: 2010-01-12 Waizhou 11.6 0.054 1.9
+#&gt; 2: 2010-01-12 Lijiadu 11.6 0.050 2.1
+#&gt; 3: 2010-02-03 Waizhou 10.8 0.005 2.2
+#&gt; 4: 2010-02-03 Lijiadu 10.5 0.042 3.6
+#&gt; 5: 2010-03-12 Waizhou  9.7 0.035 2.3
+#&gt; 6: 2010-04-14 Waizhou 10.2 0.081 3.2</code></pre>
+<p>Then you can use the <code><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html">melt()</a></code> and <code>dacast()</code> to rehshape your water quality into the prefered format:</p>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">wq_data</span> <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html">melt</a></span>(<span class="kw">id.vars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Date'</span>, <span class="st">'STN'</span>)) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/dcast.data.table.html">dcast</a></span>(<span class="no">Date</span> ~ <span class="no">variable</span> + <span class="no">STN</span>) <span class="kw">-&gt;</span> <span class="no">wq_data</span></pre></body></html></div>
+<pre><code>#&gt;          Date DO_Lijiadu DO_Waizhou TP_Lijiadu TP_Waizhou COD_Lijiadu
+#&gt; 1: 2010-01-12       11.6       11.6      0.050      0.054         2.1
+#&gt; 2: 2010-02-03       10.5       10.8      0.042      0.005         3.6
+#&gt; 3: 2010-03-11        9.3         NA      0.085         NA         3.6
+#&gt; 4: 2010-03-12         NA        9.7         NA      0.035          NA
+#&gt; 5: 2010-04-13        8.7         NA      0.042         NA         4.6
+#&gt; 6: 2010-04-14         NA       10.2         NA      0.081          NA
+#&gt;    COD_Waizhou
+#&gt; 1:         1.9
+#&gt; 2:         2.2
+#&gt; 3:          NA
+#&gt; 4:         2.3
+#&gt; 5:          NA
+#&gt; 6:         3.2</code></pre>
+<p>After that, you can use the <code><a href="../reference/dt_to_wq.html">dt_to_wq()</a></code> function to covert the water quality data into <code>.wq</code> files.</p>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../reference/dt_to_wq.html">dt_to_wq</a></span>(<span class="kw">measure.vars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>:<span class="fl">7</span>), <span class="kw">src.dt</span> <span class="kw">=</span> <span class="no">wq_data</span>, <span class="kw">path</span> <span class="kw">=</span> <span class="st">'D:/wqs'</span>,
+         <span class="kw">start.date</span> <span class="kw">=</span> <span class="st">'2010-01-01'</span>, <span class="kw">end.date</span> <span class="kw">=</span> <span class="st">'2010-12-31'</span>, <span class="kw">interval</span> <span class="kw">=</span> <span class="st">'1 day'</span>)</pre></body></html></div>
+<p>Then you will find 6 <code>.wq</code> files in your path (‘D:/wqs’ in this case). After that you can use the <code><a href="../reference/set_wqbc.html">set_wqbc()</a></code> function to generate the 21 cwqsrsXX.inp files.</p>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/set_wqbc.html">set_wqbc</a></span>(<span class="kw">wq_path</span> <span class="kw">=</span> <span class="st">'D:/wqs'</span>, <span class="kw">cwqsrs_path</span> <span class="kw">=</span> <span class="st">'D:/'</span>)</pre></body></html></div>
+<p>Replace the original 21 cwqsrsXX.inp files with the new generated ones in your EFDC model folder. Reopen the EEMS project with the EEMS software, now the EEMS can read the new water quality boundaries.</p>
+<p><strong>Note that the EFDC model can only model the 21 water quality variables below. And the <code>efdcr</code> package match the water qualiy boundaries with corresponding abbreviations</strong></p>
+<table class="table">
+<thead><tr class="header">
+<th align="center">No.</th>
+<th align="center">Full Names</th>
+<th align="center">abbreviation</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="center">1.</td>
+<td align="center">Cyanobacteria</td>
+<td align="center">Cyanobacteria</td>
+</tr>
+<tr class="even">
+<td align="center">2.</td>
+<td align="center">Diatoms</td>
+<td align="center">Diatoms</td>
+</tr>
+<tr class="odd">
+<td align="center">3.</td>
+<td align="center">Green Algae</td>
+<td align="center">GA</td>
+</tr>
+<tr class="even">
+<td align="center">4.</td>
+<td align="center">Refractory POC</td>
+<td align="center">RPOC</td>
+</tr>
+<tr class="odd">
+<td align="center">5.</td>
+<td align="center">Labile POC</td>
+<td align="center">LPOC</td>
+</tr>
+<tr class="even">
+<td align="center">6.</td>
+<td align="center">Dis Org Carbon</td>
+<td align="center">DOC</td>
+</tr>
+<tr class="odd">
+<td align="center">7.</td>
+<td align="center">Ref Part Org Phosphorus</td>
+<td align="center">RPOP</td>
+</tr>
+<tr class="even">
+<td align="center">8.</td>
+<td align="center">Lab Part Org Phosphorus</td>
+<td align="center">LPOP</td>
+</tr>
+<tr class="odd">
+<td align="center">9.</td>
+<td align="center">Dis Org Phosphorus</td>
+<td align="center">DOP</td>
+</tr>
+<tr class="even">
+<td align="center">10.</td>
+<td align="center">Total Phosphate</td>
+<td align="center">TP</td>
+</tr>
+<tr class="odd">
+<td align="center">11.</td>
+<td align="center">Ref Part Org Nitrogen</td>
+<td align="center">RPON</td>
+</tr>
+<tr class="even">
+<td align="center">12.</td>
+<td align="center">Lab Part Org Nitrogen</td>
+<td align="center">LPON</td>
+</tr>
+<tr class="odd">
+<td align="center">13.</td>
+<td align="center">Dis Org Nitrogen</td>
+<td align="center">DON</td>
+</tr>
+<tr class="even">
+<td align="center">14.</td>
+<td align="center">Ammonia Nitrogen</td>
+<td align="center">NH4N</td>
+</tr>
+<tr class="odd">
+<td align="center">15.</td>
+<td align="center">Nitrate Nitrogen</td>
+<td align="center">NO3N</td>
+</tr>
+<tr class="even">
+<td align="center">16.</td>
+<td align="center">Part Biogenic Silica</td>
+<td align="center">PBS</td>
+</tr>
+<tr class="odd">
+<td align="center">17.</td>
+<td align="center">Dis Available Silica</td>
+<td align="center">DAS</td>
+</tr>
+<tr class="even">
+<td align="center">18.</td>
+<td align="center">Chemical Oxygen Demand</td>
+<td align="center">COD</td>
+</tr>
+<tr class="odd">
+<td align="center">19.</td>
+<td align="center">Dissolved Oxygen</td>
+<td align="center">DO</td>
+</tr>
+<tr class="even">
+<td align="center">20.</td>
+<td align="center">Total Active Metal</td>
+<td align="center">TAM</td>
+</tr>
+<tr class="odd">
+<td align="center">21.</td>
+<td align="center">Fecal Coliform</td>
+<td align="center">FC</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
   </div>
