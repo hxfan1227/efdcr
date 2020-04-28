@@ -12,5 +12,6 @@ authors:
 
 development:
   mode: auto
-
-destination: docs
+  destination: dev
+  version_label: danger
+  version_tooltip: "In-development version"
