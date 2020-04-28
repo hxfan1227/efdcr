@@ -18,6 +18,8 @@ converted to a \code{data.table} object using \link[data.table]{setDT}.}
 \item{start.date}{Character. A character of desired date ('2000-01-01')}
 
 \item{end.date}{Character. A character of desired date ('2000-01-01')}
+
+\item{interval}{Character. Increment of the sequence. See \link[base]{seq.Date} for details.}
 }
 \description{
 Convert csv data files into wq formats
