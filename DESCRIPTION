@@ -2,10 +2,13 @@ Package: efdcr
 Type: Package
 Title: Environmental Fluid Dynamics Code (EFDC) Toolbox in R
 Version: 0.4.0
-Author: Hongxiang Fan
-Maintainer: Hongxiang Fan <fanhongxiang13@mails.ucas.ac.cn>
+Authors@R: person("Hongxiang", "Fan",
+                email = "hxfan@niglas.ac.cn",
+                role = c("aut", "cre"),
+                comment = c(ORCID = '0000-0001-7626-1344'))
+Maintainer: Hongxiang Fan <hxfan@niglas.ac.cn>
 Description: efdcr provides useful tools for data preparation for Environmental Fluid Dynamics Code (EFDC) .
-License: GPL (>=2)
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports:
@@ -21,7 +24,8 @@ Imports:
     ncdf4,
     hydroGOF,
     reshape2,
-    purrr
+    purrr,
+    lifecycle
 RoxygenNote: 7.1.0
 URL: https://github.com/hxfan1227/efdcr
 BugReports: https://github.com/hxfan1227/efdcr/issues
@@ -31,3 +35,4 @@ Suggests:
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
+RdMacros: lifecycle
