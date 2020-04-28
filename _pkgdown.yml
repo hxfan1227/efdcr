@@ -1,1 +1,13 @@
+title: efdcr
+
+url: https://hxfan1227.github.io/efdcr
+
+template:
+  params:
+    bootswatch: sandstone
+
+authors:
+  Christoph Schürz:
+    href: https://github.com/hxfan1227
+
 destination: docs
