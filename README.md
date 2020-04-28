@@ -2,6 +2,7 @@
 # efdcr
 
 <!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 **efdcr** is a toolbox in R for post-processing the model results of the Environmental Fluid Dynamics Code (EFDC).
