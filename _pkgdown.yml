@@ -5,6 +5,7 @@ url: https://hxfan1227.github.io/efdcr
 template:
   params:
     bootswatch: flatly
+    ganalytics: UA-164813355-1
 
 authors:
   Christoph Schürz:
