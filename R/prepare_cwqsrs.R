@@ -1,6 +1,8 @@
+#' @import data.table
 #' @importFrom plyr alply
 #' @importFrom stringr str_sub
 #' @importFrom stringr str_extract_all
+#' @importFrom purrr map_int
 NULL
 #' Set water quality boundaries (cwqsrs01-21.inp)
 #' @param wq_path Character. Path of the water quality files (\code{*.wq}). The \code{.wq} files can
@@ -16,7 +18,7 @@ set_wqbc <- function(wq_path, cwqsrs_path){
                             list.files(path = path, pattern = paste0(paste0('^', x), '.*\\.wq$'), full.names = T)
                           },
                           path = wq_path)
-  empty_data <- fread(wq_flist[[which(map_int(wq_flist, length) != 0)[1]]][1])
+  empty_data <- data.table::fread(wq_flist[[which(purrr::map_int(wq_flist, length) != 0)[1]]][1])
   empty_data[, 2] <- 0
   station_names <- stringr::str_sub(stringr::str_extract_all(wq_flist[[which(map_int(wq_flist, length) != 0)[1]]], '_.*\\.'), 2, -2)
   for (i in 1:21) {

@@ -1,7 +1,7 @@
-#' @import data.table
 #' @import plyr
 #' @importFrom lubridate ymd
 #' @importFrom utils write.table
+#' @importFrom data.table merge
 NULL
 #' Convert csv data files into wq formats
 #' @param measure.vars vector of measure variables. Can be integer (corresponding measure column numbers)
@@ -11,6 +11,7 @@ NULL
 #' @param path Character. A character indicating the path of the \code{.wq} files to be saved.
 #' @param start.date Character. A character of desired date ('2000-01-01')
 #' @param end.date Character. A character of desired date ('2000-01-01')
+#' @param interval Character. Increment of the sequence. See \link[base]{seq.Date} for details.
 #' @export
 
 dt_to_wq <- function(measure.vars, src.dt, path, start.date, end.date, interval = '1 day'){
