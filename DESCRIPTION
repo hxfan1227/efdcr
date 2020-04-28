@@ -1,7 +1,7 @@
 Package: efdcr
 Type: Package
 Title: Environmental Fluid Dynamics Code (EFDC) Toolbox in R
-Version: 0.4.0
+Version: 0.4.0.9000
 Authors@R: person("Hongxiang", "Fan",
                 email = "hxfan@niglas.ac.cn",
                 role = c("aut", "cre"),
