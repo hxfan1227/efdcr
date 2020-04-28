@@ -4,10 +4,13 @@ url: https://hxfan1227.github.io/efdcr
 
 template:
   params:
-    bootswatch: sandstone
+    bootswatch: flatly
 
 authors:
   Christoph Schürz:
     href: https://github.com/hxfan1227
+
+development:
+  mode: auto
 
 destination: docs
