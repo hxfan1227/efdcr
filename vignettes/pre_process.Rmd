@@ -17,13 +17,20 @@ knitr::opts_chunk$set(
 ## Pre-process with `efdcr`
 The time series data used by EEMS or EFDC is usually saved in `.wq` format, which is a text file with first line be the number of data points and the other lines be the time series data. The data lines will be repeated for all data points. Frankly, it is a simple and clear data structure but not tidy. Hence I design the `dt_to_wq()` function to handle that issue. 
 
+### Load required packages
+
+```{r, message=FALSE}
+library(efdcr)
+library(tidyverse)
+library(data.table)
+```
+
 ### Hydrological Data
 
 Below is the `tidy` hydrological data, with `Date` column as the index. I suggest you store your hydrological data in this kind of format and then use the `dt_to_wq()` function to convert it into `.wq` files.
 
 ```{r, echo=FALSE}
-library(efdcr)
-PYL_Hydro <- structure(list(Date = structure(c(-6209, -6208, -6207, -6206, 
+hydro_data <- structure(list(Date = structure(c(-6209, -6208, -6207, -6206, 
     -6205, -6204, -6203, -6202, -6201, -6200, -6199, -6198, -6197, -6196, 
     -6195, -6194, -6193, -6192, -6191, -6190, -6189, -6188, -6187, -6186, 
     -6185, -6184, -6183, -6182, -6181, -6180, -6179), class = "Date"), 
@@ -46,13 +53,13 @@ PYL_Hydro <- structure(list(Date = structure(c(-6209, -6208, -6207, -6206,
     -31L), class = c("data.table", "data.frame"))
 ```
 ```{r, echo=F}
-DT::datatable(PYL_Hydro)
+head(hydro_data)
 ```
 
 Now we can convert it to `.wq` files.
 
 ```{r, eval=FALSE}
-dt_to_wq(measure.vars = c('Ganjiang_Q', 'Fuhe_Q'), src.dt = PYL_Hydro, path = 'D:', 
+dt_to_wq(measure.vars = c('Ganjiang_Q', 'Fuhe_Q'), src.dt = hydro_data, path = 'D:', 
          start.date = '1953-01-01', end.date = '1953-01-20', interval = '1 day')
 ```
 
@@ -66,12 +73,80 @@ To use the `set_wqbc()` function, you should first convert your water quality da
 
 When use the `dt_to_wq()` function with water quality data, you should store your water quality data in the format below:
 
-
-
-```{r, eval=F}
-set_wqbc(wq_path = 'D:/wqs', cwqsrs_path = 'D:/cwqsrs')
+```{r, echo=FALSE}
+wq_data <- structure(list(Date = structure(c(14621, 14621, 14643, 14643, 
+    14680, 14713, 14741, 14741, 14770, 14770, 14802, 14832, 14867, 14867, 
+    14893, 14893, 14929, 14956, 14956, 14831, 14679, 14712, 14803, 14928), 
+    class = "Date"), STN = c("Waizhou", "Lijiadu", "Waizhou", "Lijiadu", 
+    "Waizhou", "Waizhou", "Waizhou", "Lijiadu", "Waizhou", "Lijiadu", "Waizhou", 
+    "Waizhou", "Waizhou", "Lijiadu", "Waizhou", "Lijiadu", "Waizhou", "Waizhou", 
+    "Lijiadu", "Lijiadu", "Lijiadu", "Lijiadu", "Lijiadu", "Lijiadu"), 
+    DO = c(11.6, 11.6, 10.8, 10.5, 9.7, 10.2, 7.9, 7.9, 6.8, 7.6, 6.4, 
+        6.4, 7.5, 6, 7.9, 6.8, 8.6, 9.7, 9.7, 6.4, 9.3, 8.7, 7.2, 8.6), 
+    TP = c(0.054, 0.05, 0.005, 0.042, 0.035, 0.081, 0.027, 0.05, 0.096, 
+        0.1, 0.085, 0.046, 0.089, 0.073, 0.096, 0.127, 0.012, 0.074, 0.066, 
+        0.031, 0.085, 0.042, 0.081, 0.023), COD = c(1.9, 2.1, 2.2, 3.6, 
+        2.3, 3.2, 2, 4, 2.3, 4.1, 1.9, 1.8, 1.7, 3.2, 2.3, 3.4, 2.6, 3.5, 
+        3.2, 1.6, 3.6, 4.6, 4.1, 3)), row.names = c(NA, -24L), class = c("data.table", 
+    "data.frame"))
 ```
 
+```{r, echo=F}
+head(wq_data)
+```
 
-The `efdcr` package is mainly used for reading and visualizing the modeling results exported by the EEMS. 
-Currently, only the `.nc` files exported by EEMS is supported. 
+Then you can use the `melt()` and `dacast()` to rehshape your water quality into the prefered format:
+
+```{r}
+wq_data %>% 
+  melt(id.vars = c('Date', 'STN')) %>%
+  dcast(Date ~ variable + STN) -> wq_data
+```
+
+```{r, echo=FALSE}
+head(wq_data)
+```
+
+After that, you can use the `dt_to_wq()` function to covert the water quality data into `.wq` files.
+
+```{r, eval=FALSE}
+dt_to_wq(measure.vars = c(2:7), src.dt = wq_data, path = 'D:/wqs', 
+         start.date = '2010-01-01', end.date = '2010-12-31', interval = '1 day')
+```
+
+Then you will find 6 `.wq` files in your path ('D:/wqs' in this case). After that you can use the `set_wqbc()` function to generate the 21 cwqsrsXX.inp files.
+
+```{r, eval=F}
+set_wqbc(wq_path = 'D:/wqs', cwqsrs_path = 'D:/')
+```
+
+Replace the original 21 cwqsrsXX.inp files with the new generated ones in your EFDC model folder. Reopen the EEMS project with the EEMS software, now the EEMS can read the new water quality boundaries.
+
+**Note that the EFDC model can only model the 21 water quality variables below. And the `efdcr` package match the water qualiy boundaries with corresponding abbreviations**
+
+| No. | Full Names | abbreviation |
+| :----: | :----: | :----: |
+|1.|Cyanobacteria |Cyanobacteria|
+|2.|Diatoms |Diatoms|
+|3.|Green Algae |GA|
+|4.|Refractory POC |RPOC|
+|5.|Labile POC |LPOC|
+|6.|Dis Org Carbon |DOC|
+|7.|Ref Part Org Phosphorus |RPOP|
+|8.|Lab Part Org Phosphorus |LPOP|
+|9.|Dis Org Phosphorus |DOP|
+|10.|Total Phosphate |TP|
+|11.|Ref Part Org Nitrogen |RPON|
+|12.|Lab Part Org Nitrogen |LPON|
+|13.|Dis Org Nitrogen |DON|
+|14.|Ammonia Nitrogen |NH4N|
+|15.|Nitrate Nitrogen |NO3N|
+|16.|Part Biogenic Silica |PBS|
+|17.|Dis Available Silica |DAS|
+|18.|Chemical Oxygen Demand |COD|
+|19.|Dissolved Oxygen |DO|
+|20.|Total Active Metal |TAM|
+|21.|Fecal Coliform |FC|
+
+
+
