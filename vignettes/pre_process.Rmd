@@ -1,0 +1,77 @@
+---
+title: "Pre-Processing with efdcr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Pre-Processing with efdcr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Pre-process with `efdcr`
+The time series data used by EEMS or EFDC is usually saved in `.wq` format, which is a text file with first line be the number of data points and the other lines be the time series data. The data lines will be repeated for all data points. Frankly, it is a simple and clear data structure but not tidy. Hence I design the `dt_to_wq()` function to handle that issue. 
+
+### Hydrological Data
+
+Below is the `tidy` hydrological data, with `Date` column as the index. I suggest you store your hydrological data in this kind of format and then use the `dt_to_wq()` function to convert it into `.wq` files.
+
+```{r, echo=FALSE}
+library(efdcr)
+PYL_Hydro <- structure(list(Date = structure(c(-6209, -6208, -6207, -6206, 
+    -6205, -6204, -6203, -6202, -6201, -6200, -6199, -6198, -6197, -6196, 
+    -6195, -6194, -6193, -6192, -6191, -6190, -6189, -6188, -6187, -6186, 
+    -6185, -6184, -6183, -6182, -6181, -6180, -6179), class = "Date"), 
+    Ganjiang_Q = c(511L, 625L, 619L, 591L, 524L, 480L, 450L, 428L, 405L, 
+        398L, 386L, 367L, 377L, 380L, 366L, 360L, 380L, 395L, 352L, 350L, 
+        372L, 380L, 440L, 482L, 548L, 610L, 717L, 1330L, 2300L, 2390L, 
+        2270L), Fuhe_Q = c(96, 84, 80.3, 75.2, 92, 88, 86, 84, 84, 82, 
+        78.5, 70.1, 66.7, 68.4, 70.1, 70.1, 76.9, 80.3, 82, 84, 88, 121, 
+        152, 133, 127, 190, 752, 1250, 734, 453, 334), Xinjiang_Q = c(75.6, 
+        69.3, 67.2, 63, 61, 57, 55, 57, 55, 55, 55, 55, 53, 55, 55, 59, 
+        63, 77.7, 86.1, 96.6, 103, 105, 109, 109, 124, 337, 1580, 1620, 
+        791, 461, 355), Raohe_Q = c(39.6, 40.6, 38.8, 36.8, 33.6, 34.8, 
+        33.2, 34, 33.6, 30.9, 30.9, 31.3, 31.7, 32.1, 32.8, 34, 35.6, 35.6, 
+        35.6, 36, 37.2, 36, 36.8, 36.8, 59.4, 407.9, 681, 396, 240.5, 173.8, 
+        142.7), Xiushui_Q = c(74.25928, 76.5436, 76.5436, 71.97496, 69.69064, 
+        69.69064, 67.40632, 67.40632, 67.40632, 65.122, 62.83768, 62.83768, 
+        60.55336, 62.83768, 67.40632, 69.69064, 62.83768, 69.69064, 69.69064, 
+        69.69064, 76.5436, 76.5436, 76.5436, 74.25928, 95.19888, 495.3356, 
+        815.1404, 415.3844, 235.68456, 167.15496, 154.5912)), row.names = c(NA, 
+    -31L), class = c("data.table", "data.frame"))
+```
+```{r, echo=F}
+DT::datatable(PYL_Hydro)
+```
+
+Now we can convert it to `.wq` files.
+
+```{r, eval=FALSE}
+dt_to_wq(measure.vars = c('Ganjiang_Q', 'Fuhe_Q'), src.dt = PYL_Hydro, path = 'D:', 
+         start.date = '1953-01-01', end.date = '1953-01-20', interval = '1 day')
+```
+
+Then you will find 2 `.wq` files in your path ('D:' in this case). After that you can use the `import` button in EEMS when setting the boundaries. It will save you much time.
+
+### Water quality data
+
+Compared to other boundaires, prepare the water quality boundaries (i.e., cwqsrs01-21.inp) is the most trival thing when buidling a water enviroment model.
+However, the EEMS seems to have bugs in reading the water quality boundaies, i.e., it can not import the cwqsrsXX.inp files at once. Consequently, I come up with the `set_wqbc()` function. 
+To use the `set_wqbc()` function, you should first convert your water quality data to `.wq` files with the `dt_to_wq()` function. After that you may easily prepare the 21 input files required by EEMS.
+
+When use the `dt_to_wq()` function with water quality data, you should store your water quality data in the format below:
+
+
+
+```{r, eval=F}
+set_wqbc(wq_path = 'D:/wqs', cwqsrs_path = 'D:/cwqsrs')
+```
+
+
+The `efdcr` package is mainly used for reading and visualizing the modeling results exported by the EEMS. 
+Currently, only the `.nc` files exported by EEMS is supported. 
