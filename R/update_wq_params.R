@@ -51,11 +51,11 @@ update_wq3dwc <- function(){
   
 }
 
-inp <- readLines('C:/Users/hxfan/Desktop/wq3dwc.inp')
-writeLines(inp, 'C:/Users/hxfan/Desktop/wq3dwc2.inp')
-cards <- paste0('C', c('08', '09', 10:29, 45:47))
-wq_params_list <- map(cards, get_wq_params)
-wq_params <- map_df(1:length(cards), ~ data.table(PARAM = wq_params_list[[.]], CARD = cards[.]))
-params_to_update <- sample(wq_params$PARAM, size = 5)
+# inp <- readLines('C:/Users/hxfan/Desktop/wq3dwc.inp')
+# writeLines(inp, 'C:/Users/hxfan/Desktop/wq3dwc2.inp')
+# cards <- paste0('C', c('08', '09', 10:29, 45:47))
+# wq_params_list <- map(cards, get_wq_params)
+# wq_params <- map_df(1:length(cards), ~ data.table(PARAM = wq_params_list[[.]], CARD = cards[.]))
+# params_to_update <- sample(wq_params$PARAM, size = 5)
 
 
