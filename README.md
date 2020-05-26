@@ -3,6 +3,7 @@
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build status](https://travis-ci.com/hxfan1227/efdcr.svg?branch=master)](https://travis-ci.com/hxfan1227/efdcr)
 <!-- badges: end -->
 
 The `efdcr` package is a toolbox in R for pre- and post-processing the model results of the Environmental Fluid Dynamics Code (EFDC). 
