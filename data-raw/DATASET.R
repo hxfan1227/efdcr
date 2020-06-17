@@ -5,7 +5,7 @@ wq_abbs <- c(`1` = "Cyanobacteria", `2` = "Diatoms", `3` = "GA", `4` = "RPOC",
              `10` = "TP", `11` = "RPON", `12` = "LPON", `13` = "DON", `14` = "NH4N", 
              `15` = "NO3N", `16` = "PBS", `17` = "DAS", `18` = "COD", `19` = "DO", 
              `20` = "TAM", `21` = "FC")
-usethis::use_data(wq_abbs, overwrite = TRUE, internal = T)
+
 
 cwqsrs_h <- structure(list(`1` = c("C  cwqsr01.inp, Cyanobacteria (mg/l as C)", 
                                    "C  Project ID: ", "C", "C  ISTYP  MCSER(NS,8)  TCCSER(NS,8)  TACSER(NS,8)  RMULADJ(NS,8)  ADDADJ(NS,8)", 
@@ -116,4 +116,4 @@ cwqsrs_h <- structure(list(`1` = c("C  cwqsr01.inp, Cyanobacteria (mg/l as C)",
                                                                                                                                                                                                                                                                                                                                                                                                                                   "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", 
                                                                                                                                                                                                                                                                                                                                                                                                                                   "14", "15", "16", "17", "18", "19", "20", "21"), class = "factor")), class = "data.frame", row.names = c(NA, 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            -21L)))
-usethis::use_data(cwqsrs_h, overwrite = TRUE, internal = T)
+usethis::use_data(wq_abbs, cwqsrs_h, overwrite = T, internal = T)
