@@ -50,6 +50,8 @@ behaviour from the default plot specification.}
 
 \item{scale}{Multiplicative scaling factor.}
 
+\item{arrow_scale}{Multiplicative scaling factor for arrows}
+
 \item{...}{other arguments passed on to \code{\link[ggplot2]{layer}}.}
 }
 \description{

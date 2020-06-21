@@ -8,7 +8,7 @@
 
 The `efdcr` package is a toolbox in R for pre- and post-processing the model results of the Environmental Fluid Dynamics Code (EFDC). 
 It provides tools to link existing EFDC models (build by EEMS) with your modelling wokflows in R.
-`efdcr` enables you to set up the model data before you can directly import to the EEMS and to easily visualize the model results exported by EEMS. The central goal of `efdct` is to return simulation results in a *tidy* format to facilitate an easy implementation of EFDC simulations, together with other R packages into clean and efficient R programming workflows. The `efdcr` pakcage is part of my PhD thesis and was for personal use origninally and the APIs are not stable. Inspired by the `SWATplusR` package, I decided to continue to develop the package. Any contributions are welcomed and appreciated. 
+`efdcr` enables you to set up the model data before you can directly import to the EEMS and to easily visualize the model results exported by EEMS. The central goal of `efdcr` is to return simulation results in a *tidy* format to facilitate an easy implementation of EFDC simulations, together with other R packages into clean and efficient R programming workflows. The `efdcr` pakcage is part of my PhD thesis and was for personal use origninally and the APIs are not stable. Inspired by the `SWATplusR` package, I decided to continue to develop the package. Any contributions are welcomed and appreciated. 
 
 
 ## Why `efdcr`?
