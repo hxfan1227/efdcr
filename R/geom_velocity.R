@@ -33,6 +33,8 @@ NULL
 #' behaviour from the default plot specification.
 #'
 #' @param scale Multiplicative scaling factor.
+#' 
+#' @param arrow_scale Multiplicative scaling factor for arrows
 #'
 #' @param ... other arguments passed on to \code{\link[ggplot2]{layer}}.
 #'
