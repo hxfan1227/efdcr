@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Update the water quality parameters in <code>wq3dwc.inp</code>. — update_wq_params_value • efdcr</title>
+<title>Pipe operator — %&gt;% • efdcr</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,9 @@
 
 
 
-<meta property="og:title" content="Update the water quality parameters in <code>wq3dwc.inp</code>. — update_wq_params_value" />
-<meta property="og:description" content="Update the water quality parameters in wq3dwc.inp.
-Get the available water quality parameters.
-Get the value of the selected water quality parameter." />
+<meta property="og:title" content="Pipe operator — %&gt;%" />
+<meta property="og:description" content="Pipe an object forward into a function or call expression. 
+See %&amp;gt;% for more details." />
 
 
 
@@ -138,43 +137,18 @@ Get the value of the selected water quality parameter." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Update the water quality parameters in <code>wq3dwc.inp</code>.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/hxfan1227/efdcr/blob/master/R/update_wq_params.R'><code>R/update_wq_params.R</code></a></small>
-    <div class="hidden name"><code>update_wq_params_value.Rd</code></div>
+    <h1>Pipe operator</h1>
+    <small class="dont-index">Source: <a href='https://github.com/hxfan1227/efdcr/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>pipe.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Update the water quality parameters in <code>wq3dwc.inp</code>.</p>
-<p>Get the available water quality parameters.</p>
-<p>Get the value of the selected water quality parameter.</p>
+    <p>Pipe an object forward into a function or call expression. 
+See <code>%&gt;%</code> for more details.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>update_wq_params_value</span>(<span class='no'>param</span>, <span class='no'>new_val</span>, <span class='no'>inp</span>)
+    <pre class="usage"><span class='no'>lhs</span> <span class='kw'>%&gt;%</span> <span class='no'>rhs</span></pre>
 
-<span class='fu'>get_wq_params</span>(<span class='no'>card</span>, <span class='no'>inp</span>)
-
-<span class='fu'>get_wq_params_value</span>(<span class='no'>param</span>, <span class='no'>inp</span>)</pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>param</th>
-      <td><p>the name of the parameter to be updated.</p></td>
-    </tr>
-    <tr>
-      <th>new_val</th>
-      <td><p>the new value of the target water quality parameter.</p></td>
-    </tr>
-    <tr>
-      <th>inp</th>
-      <td><p>the content of the <code>wq3dwc.inp</code> file.</p></td>
-    </tr>
-    <tr>
-      <th>card</th>
-      <td><p>the CARD which the parameter belongs to.</p></td>
-    </tr>
-    </table>
 
 
   </div>

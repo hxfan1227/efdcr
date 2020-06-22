@@ -40,7 +40,8 @@
 
 
 <meta property="og:title" content="Set water quality boundaries (cwqsrs01-21.inp) — set_wqbc" />
-<meta property="og:description" content="Set water quality boundaries (cwqsrs01-21.inp)" />
+<meta property="og:description" content="Set water quality boundaries (cwqsrs01-21.inp)
+Generate the abbreviations of the simulated water quality parameters." />
 
 
 
@@ -143,9 +144,12 @@
 
     <div class="ref-description">
     <p>Set water quality boundaries (cwqsrs01-21.inp)</p>
+<p>Generate the abbreviations of the simulated water quality parameters.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>set_wqbc</span>(<span class='no'>wq_path</span>, <span class='no'>cwqsrs_path</span>)</pre>
+    <pre class="usage"><span class='fu'>set_wqbc</span>(<span class='no'>wq_path</span>, <span class='no'>cwqsrs_path</span>)
+
+<span class='fu'>generate_wq_abb</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,6 +162,10 @@ be generated using <a href='dt_to_wq.html'>dt_to_wq</a>.</p></td>
     <tr>
       <th>cwqsrs_path</th>
       <td><p>Character. Path to store the cwqsrsXX.inp files.</p></td>
+    </tr>
+    <tr>
+      <th>x</th>
+      <td><p>Character. Full name of the water quality parameter.</p></td>
     </tr>
     </table>
 
