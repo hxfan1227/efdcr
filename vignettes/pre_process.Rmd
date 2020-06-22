@@ -21,7 +21,6 @@ The time series data used by EEMS or EFDC is usually saved in `.wq` format, whic
 
 ```{r, message=FALSE}
 library(efdcr)
-library(tidyverse)
 library(data.table)
 ```
 

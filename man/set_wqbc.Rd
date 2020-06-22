@@ -2,16 +2,23 @@
 % Please edit documentation in R/prepare_cwqsrs.R
 \name{set_wqbc}
 \alias{set_wqbc}
+\alias{generate_wq_abb}
 \title{Set water quality boundaries (cwqsrs01-21.inp)}
 \usage{
 set_wqbc(wq_path, cwqsrs_path)
+
+generate_wq_abb(x)
 }
 \arguments{
 \item{wq_path}{Character. Path of the water quality files (\code{*.wq}). The \code{.wq} files can
 be generated using \link[efdcr]{dt_to_wq}.}
 
 \item{cwqsrs_path}{Character. Path to store the cwqsrsXX.inp files.}
+
+\item{x}{Character. Full name of the water quality parameter.}
 }
 \description{
 Set water quality boundaries (cwqsrs01-21.inp)
+
+Generate the abbreviations of the simulated water quality parameters.
 }

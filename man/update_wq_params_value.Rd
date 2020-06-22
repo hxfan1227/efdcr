@@ -20,8 +20,6 @@ get_wq_params_value(param, inp)
 \item{inp}{the content of the \code{wq3dwc.inp} file.}
 
 \item{card}{the CARD which the parameter belongs to.}
-
-\item{path}{the path of the updated \code{wq3dwc.inp} files.}
 }
 \description{
 Update the water quality parameters in \code{wq3dwc.inp}.
