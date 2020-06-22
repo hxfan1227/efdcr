@@ -8,6 +8,7 @@ NULL
 #' @param wq_path Character. Path of the water quality files (\code{*.wq}). The \code{.wq} files can
 #' be generated using \link[efdcr]{dt_to_wq}.
 #' @param cwqsrs_path Character. Path to store the cwqsrsXX.inp files.
+#' @param x Character. Full name of the water quality parameter.
 #' @export
 set_wqbc <- function(wq_path, cwqsrs_path){
   cwqsrs <- file.path(cwqsrs_path, c(paste0('cwqsr', 0, 1:9, '.inp'), paste0('cwqsr', 10:21, '.inp')))
@@ -41,8 +42,19 @@ set_wqbc <- function(wq_path, cwqsrs_path){
     }
   }
 }
-
-
+NULL
+#' Generate the abbreviations of the simulated water quality parameters.
+#' @rdname set_wqbc
+#' @export
+generate_wq_abb <- function(x){
+  stringr::str_extract_all(x[1], ',.*\\(', simplify = T) %>%
+    stringr::str_sub(2, -2) %>% stringr::str_trim() -> fullnames
+  fullnames %>% stringr::str_extract_all('[A-Z]', simplify = T) -> abbs
+  if(length(abbs) >=2){
+    return(paste(abbs, collapse = ''))
+  }
+  return(fullnames)
+}
 
 
 
