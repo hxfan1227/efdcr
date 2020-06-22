@@ -109,3 +109,4 @@ plot_efdc_ts <- function(fname,
   }
 }
 
+utils::globalVariables(c('Date', 'RefDate', 'Type', 'Model', 'Data', 'ID', 'Value'))

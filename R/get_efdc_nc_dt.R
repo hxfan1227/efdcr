@@ -235,3 +235,4 @@ get_efdc_nc_coordinates <- function(nc, simplify = T){
   invisible(base_df)
 }
 
+utils::globalVariables(c('WETFLAG', 'WSEL', 'ZBOT'))

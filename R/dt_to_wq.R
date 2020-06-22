@@ -15,6 +15,7 @@ NULL
 #' @export
 
 dt_to_wq <- function(measure.vars, src.dt, path, start.date, end.date, interval = '1 day'){
+  Date = NULL
   if(!is.data.table(src.dt)){
     setDT(src.dt)
   }
@@ -28,7 +29,7 @@ dt_to_wq <- function(measure.vars, src.dt, path, start.date, end.date, interval 
   all.char <- all(is.character(measure.vars))
   all.num <- all(is.numeric(measure.vars))
   if(all.char){
-    tar.dt <- src.dt[, ..measure.vars]
+    tar.dt <- src.dt[, measure.vars, with = F]
     plyr::a_ply(measure.vars,
                 .margins = 1,
                 .fun = write_wq,
@@ -36,7 +37,7 @@ dt_to_wq <- function(measure.vars, src.dt, path, start.date, end.date, interval 
                 path_ = path)
   }
   if(all.num){
-    tar.dt <- src.dt[, ..measure.vars]
+    tar.dt <- src.dt[, measure.vars, with = F]
     measure.vars.names <- colnames(src.dt)[measure.vars]
     plyr::a_ply(measure.vars.names,
                 .margins = 1,
@@ -55,10 +56,11 @@ NULL
 #' @param path_ Character. A character indicating the path of the \code{.wq} files to be saved.
 #' @export
 write_wq <- function(measure.var_, src.dt_, path_){
+  No = NULL
   dst.file <- file.path(path_, paste0(measure.var_, ".wq"))
   src.dt_[, No:= seq(0, NROW(src.dt_) - 1)]
   src.dt_ <- na.omit(src.dt_)
-  write(paste(NROW(src.dt_[, ..measure.var_]), measure.var_), file = dst.file)
+  write(paste(NROW(src.dt_[, measure.var_, with = F]), measure.var_), file = dst.file)
   write.table(src.dt_[, c('No', measure.var_), with = F],
               file = dst.file,
               sep = " ",
