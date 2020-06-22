@@ -2,7 +2,7 @@
 title: "Introduction of efdcr"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to efdcr}
+  %\VignetteIndexEntry{Introduction of efdcr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
