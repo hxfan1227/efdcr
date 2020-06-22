@@ -1,12 +1,10 @@
-#' @import stringr 
-#' @importFrom stringr %>%
+#' @import stringr
 NULL
 #' Update the water quality parameters in \code{wq3dwc.inp}.
 #' @param card the CARD which the parameter belongs to.
 #' @param inp the content of the \code{wq3dwc.inp} file.
 #' @param param the name of the parameter to be updated.
 #' @param new_val the new value of the target water quality parameter.
-#' @param path the path of the updated \code{wq3dwc.inp} files.
 #' @export
 update_wq_params_value <- function(param, new_val, inp){
   loc <- stringr::str_which(inp, param)
@@ -73,3 +71,4 @@ get_wq_params_value <- function(param, inp){
 # wq_params <- map_df(1:length(cards), ~ data.table(PARAM = wq_params_list[[.]], CARD = cards[.]))
 # params_to_update <- sample(wq_params$PARAM, size = 5)
 # update_wq_params_value('KHNc', '999', inp = inp)
+utils::globalVariables(c('PARAM', 'CARD'))
