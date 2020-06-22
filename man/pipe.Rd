@@ -7,7 +7,6 @@
 lhs \%>\% rhs
 }
 \description{
-Pipe an object forward into a function or call expression. 
-See \code{\link[magrittr]{\%>\%}} for more details.
+Pipe an object forward into a function or call expression.
 }
 \keyword{internal}
