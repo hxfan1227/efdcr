@@ -2,10 +2,19 @@ Package: efdcr
 Type: Package
 Title: Environmental Fluid Dynamics Code Toolbox
 Version: 0.4.1
-Authors@R: person("Hongxiang", "Fan",
-                email = "hxfan@niglas.ac.cn",
-                role = c("aut", "cre"),
-                comment = c(ORCID = '0000-0001-7626-1344'))
+Authors@R: c(
+  person("Hongxiang", "Fan",
+         email = "hxfan@niglas.ac.cn",
+         role = c("aut", "cre"),
+         comment = c(ORCID = '0000-0001-7626-1344')),
+  person("Guoyu", "Xu",
+         email = 'xgysos@163.com',
+         role = c("aut"),
+         comment = c(ORCID = '0000-0002-4539-2840')),
+  person("Mingrui", "Zhang",
+         email = "zmr.309@foxmail.com",
+         role = c('ctb'))
+  )
 Maintainer: Hongxiang Fan <hxfan@niglas.ac.cn>
 Description: Tools to link existing Environmental Fluid Dynamics Code (EFDC) models with your modelling workflows in R. efdcr enables you to set up the model data before you can directly import to the EFDC and to easily visualize the model results exported by EFDC.
 License: GPL-3
