@@ -7,11 +7,6 @@ NULL
 #' @param na_replacement Character. A character vector of replacements.
 #' @param coord_sys Character. Coordinate system in the grd.
 #' @export
-#' @examples \dontrun{
-#' f <- system.file("extdata/poyang_lake.grd", package="efdcr")
-#' format_rfggrid(src_grd = f, dst_grd = tempfile(fileext = ".grd"))
-#' }
-
 format_rfggrid <- function(src_grd,
                            dst_grd,
                            na_pattern = "-9.99999000000000024E\\+02",
