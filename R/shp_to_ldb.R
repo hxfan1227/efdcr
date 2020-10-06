@@ -3,10 +3,7 @@
 #' @param dst_ldb Character. Full name of the txt file to write.
 #' @return Either a list of \code{NULL} or error messages.
 #' @export
-#' @examples \dontrun{
-#' shp_to_ldb(src_shp = system.file("extdata/pyl_utm50n.shp", package = "efdcr"),
-#' dst_ldb = tempfile(fileext = ".ldb"))
-#' }
+
 shp_to_ldb <- function(src_shp, dst_ldb)
 {
 
