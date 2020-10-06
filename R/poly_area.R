@@ -4,11 +4,6 @@ NULL
 #' @param y Numeric. An array contains the y coordinates of the vextices.
 #' @return The area of the polyon.
 #' @export
-#' @examples \dontrun{
-#' x <- c(0, 0, 1, 1)
-#' y <- c(1, 0, 0, 1)
-#' poly_area(x, y)
-#' }
 
 # the code is inspired by the EFDC code
 poly_area <- function(x, y){
