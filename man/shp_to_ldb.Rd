@@ -17,9 +17,3 @@ Either a list of \code{NULL} or error messages.
 \description{
 Convert ESRI shapefile into text format.
 }
-\examples{
-\dontrun{
-shp_to_ldb(src_shp = system.file("extdata/pyl_utm50n.shp", package = "efdcr"),
-dst_ldb = tempfile(fileext = ".ldb"))
-}
-}

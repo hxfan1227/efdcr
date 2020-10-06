@@ -17,10 +17,3 @@ The area of the polyon.
 \description{
 Calculate the area of the polygon with the given vextices
 }
-\examples{
-\dontrun{
-x <- c(0, 0, 1, 1)
-y <- c(1, 0, 0, 1)
-poly_area(x, y)
-}
-}

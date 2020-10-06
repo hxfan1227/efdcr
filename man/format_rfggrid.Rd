@@ -26,9 +26,3 @@ format_rfggrid(
 \description{
 Format Delft3D RFGGRID (.grd) file.
 }
-\examples{
-\dontrun{
-f <- system.file("extdata/poyang_lake.grd", package="efdcr")
-format_rfggrid(src_grd = f, dst_grd = tempfile(fileext = ".grd"))
-}
-}
