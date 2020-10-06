@@ -48,7 +48,7 @@ plot_efdc_ts <- function(fname,
   fname <- stringr::str_remove_all(fname, 'file:///')
   file_header <- readr::read_lines(fname, skip = 11, n_max = 1)
   # When exporting timeseries data from EE8.4 with Julian format, the Base Date line (L12) is somehow missing.
-  base_date_list <- purrr::safely(as.Date, otherwise = as.Date(begin_date))(str_extract_all(file_header, '\\d{4}/\\d{1,2}/\\d{1,2}', simplify = T)[1,1])
+  base_date_list <- purrr::safely(as.Date, otherwise = as.Date(begin_date))(stringr::str_extract_all(file_header, '\\d{4}/\\d{1,2}/\\d{1,2}', simplify = T)[1,1])
   base_date <- base_date_list$result
   xlim_ <- x_lim
   ylim_ <- y_lim
@@ -72,7 +72,11 @@ plot_efdc_ts <- function(fname,
     data_to_read <- data_to_read + data_length
   }
   calibration_dt <- data.table::setDT(rbind.fill(data_list))
-  calibration_dt <- calibration_dt[, Date := base_date + ddays(RefDate)]
+  if (str_detect(calibration_dt$RefDate[1], ':')){
+    calibration_dt[, Date := as.Date(RefDate)]
+  } else {
+    calibration_dt <- calibration_dt[, Date := base_date + ddays(RefDate)]
+  }
   if(!is.null(x_lim)){
     xlim_ <- lubridate::ymd(x_lim)
     xlim_ <- as.POSIXct(xlim_)
@@ -94,8 +98,8 @@ plot_efdc_ts <- function(fname,
                                 Variable = rownames(hydroGOF::gof(Model, Data))), by = .(ID)]
   metrics_dt <- dcast(metrics_dt, ID ~Variable, value.var = 'Metrics')
   p <- ggplot2::ggplot() +
-    ggplot2::geom_point(data = obs_dt, ggplot2::aes(x = Date, y = Value, color = 'Observation'), shape = obs_shape) +
-    ggplot2::geom_line(data = mod_dt, ggplot2::aes(x = Date, y = Value, color = 'Model'), size = mod_size) +
+    ggplot2::geom_point(data = obs_dt, ggplot2::aes(x = as.POSIXct(Date), y = Value, color = 'Observation'), shape = obs_shape) +
+    ggplot2::geom_line(data = mod_dt, ggplot2::aes(x = as.POSIXct(Date), y = Value, color = 'Model'), size = mod_size) +
     ggplot2::facet_wrap(~ID, ncol = n_col, scales = 'free') +
     ggplot2::scale_x_datetime(date_labels = '%Y-%m') +
     scale_color_manual('', values = c('Observation' = obs_col, 'Model' = mod_col)) +
