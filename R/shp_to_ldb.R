@@ -1,4 +1,6 @@
 #' Convert ESRI shapefile into text format.
+#' @importFrom  raster shapefile
+#' @importFrom broom tidy
 #' @param src_shp Character. Full name of the shapfile to be converted.
 #' @param dst_ldb Character. Full name of the txt file to write.
 #' @return Either a list of \code{NULL} or error messages.
