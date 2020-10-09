@@ -88,7 +88,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="pre_process_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Pre-Processing with efdcr</h1>
@@ -109,8 +109,9 @@
 <div id="load-required-packages" class="section level3">
 <h3 class="hasAnchor">
 <a href="#load-required-packages" class="anchor"></a>Load required packages</h3>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">efdcr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">data.table</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hxfan1227/efdcr">efdcr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://r-datatable.com">data.table</a></span><span class="op">)</span></pre></div>
 </div>
 <div id="hydrological-data" class="section level3">
 <h3 class="hasAnchor">
@@ -124,8 +125,9 @@
 #&gt; 5: 1953-01-05        524   92.0       61.0    33.6  69.69064
 #&gt; 6: 1953-01-06        480   88.0       57.0    34.8  69.69064</code></pre>
 <p>Now we can convert it to <code>.wq</code> files.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/dt_to_wq.html">dt_to_wq</a></span>(<span class="kw">measure.vars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Ganjiang_Q'</span>, <span class="st">'Fuhe_Q'</span>), <span class="kw">src.dt</span> <span class="kw">=</span> <span class="no">hydro_data</span>, <span class="kw">path</span> <span class="kw">=</span> <span class="st">'D:'</span>,
-         <span class="kw">start.date</span> <span class="kw">=</span> <span class="st">'1953-01-01'</span>, <span class="kw">end.date</span> <span class="kw">=</span> <span class="st">'1953-01-20'</span>, <span class="kw">interval</span> <span class="kw">=</span> <span class="st">'1 day'</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="../reference/dt_to_wq.html">dt_to_wq</a></span><span class="op">(</span>measure.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Ganjiang_Q'</span>, <span class="st">'Fuhe_Q'</span><span class="op">)</span>, src.dt <span class="op">=</span> <span class="va">hydro_data</span>, path <span class="op">=</span> <span class="st">'D:'</span>, 
+         start.date <span class="op">=</span> <span class="st">'1953-01-01'</span>, end.date <span class="op">=</span> <span class="st">'1953-01-20'</span>, interval <span class="op">=</span> <span class="st">'1 day'</span><span class="op">)</span></pre></div>
 <p>Then you will find 2 <code>.wq</code> files in your path (‘D:’ in this case). After that you can use the <code>import</code> button in EEMS when setting the boundaries. It will save you much time.</p>
 </div>
 <div id="water-quality-data" class="section level3">
@@ -141,9 +143,10 @@
 #&gt; 5: 2010-03-12 Waizhou  9.7 0.035 2.3
 #&gt; 6: 2010-04-14 Waizhou 10.2 0.081 3.2</code></pre>
 <p>Then you can use the <code><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html">melt()</a></code> and <code>dacast()</code> to rehshape your water quality into the prefered format:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">wq_data</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html">melt</a></span>(<span class="kw">id.vars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'Date'</span>, <span class="st">'STN'</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/dcast.data.table.html">dcast</a></span>(<span class="no">Date</span> ~ <span class="no">variable</span> + <span class="no">STN</span>) <span class="kw">-&gt;</span> <span class="no">wq_data</span></pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="va">wq_data</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html">melt</a></span><span class="op">(</span>id.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'Date'</span>, <span class="st">'STN'</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/dcast.data.table.html">dcast</a></span><span class="op">(</span><span class="va">Date</span> <span class="op">~</span> <span class="va">variable</span> <span class="op">+</span> <span class="va">STN</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">wq_data</span></pre></div>
 <pre><code>#&gt;          Date DO_Lijiadu DO_Waizhou TP_Lijiadu TP_Waizhou COD_Lijiadu
 #&gt; 1: 2010-01-12       11.6       11.6      0.050      0.054         2.1
 #&gt; 2: 2010-02-03       10.5       10.8      0.042      0.005         3.6
@@ -159,10 +162,12 @@
 #&gt; 5:          NA
 #&gt; 6:         3.2</code></pre>
 <p>After that, you can use the <code><a href="../reference/dt_to_wq.html">dt_to_wq()</a></code> function to covert the water quality data into <code>.wq</code> files.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../reference/dt_to_wq.html">dt_to_wq</a></span>(<span class="kw">measure.vars</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>:<span class="fl">7</span>), <span class="kw">src.dt</span> <span class="kw">=</span> <span class="no">wq_data</span>, <span class="kw">path</span> <span class="kw">=</span> <span class="st">'D:/wqs'</span>,
-         <span class="kw">start.date</span> <span class="kw">=</span> <span class="st">'2010-01-01'</span>, <span class="kw">end.date</span> <span class="kw">=</span> <span class="st">'2010-12-31'</span>, <span class="kw">interval</span> <span class="kw">=</span> <span class="st">'1 day'</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="../reference/dt_to_wq.html">dt_to_wq</a></span><span class="op">(</span>measure.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">7</span><span class="op">)</span>, src.dt <span class="op">=</span> <span class="va">wq_data</span>, path <span class="op">=</span> <span class="st">'D:/wqs'</span>, 
+         start.date <span class="op">=</span> <span class="st">'2010-01-01'</span>, end.date <span class="op">=</span> <span class="st">'2010-12-31'</span>, interval <span class="op">=</span> <span class="st">'1 day'</span><span class="op">)</span></pre></div>
 <p>Then you will find 6 <code>.wq</code> files in your path (‘D:/wqs’ in this case). After that you can use the <code><a href="../reference/set_wqbc.html">set_wqbc()</a></code> function to generate the 21 cwqsrsXX.inp files.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/set_wqbc.html">set_wqbc</a></span>(<span class="kw">wq_path</span> <span class="kw">=</span> <span class="st">'D:/wqs'</span>, <span class="kw">cwqsrs_path</span> <span class="kw">=</span> <span class="st">'D:/'</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="fu"><a href="../reference/set_wqbc.html">set_wqbc</a></span><span class="op">(</span>wq_path <span class="op">=</span> <span class="st">'D:/wqs'</span>, cwqsrs_path <span class="op">=</span> <span class="st">'D:/'</span><span class="op">)</span></pre></div>
 <p>Replace the original 21 cwqsrsXX.inp files with the new generated ones in your EFDC model folder. Reopen the EEMS project with the EEMS software, now the EEMS can read the new water quality boundaries.</p>
 <p><strong>Note that the EFDC model can only model the 21 water quality variables below. And the <code>efdcr</code> package match the water qualiy boundaries with corresponding abbreviations</strong></p>
 <table class="table">
@@ -298,7 +303,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

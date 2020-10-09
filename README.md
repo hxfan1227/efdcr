@@ -21,7 +21,7 @@ It provides tools to link existing EFDC models (build by EEMS) with your modelli
 ## Installation
 
 `efdcr` is still under development and will be constantly updated (more features will be added). 
-You can Install the latest development version of efdcr from [GitHub](https://www.github.com) with:
+You can Install the latest development version of `efdcr` from [GitHub](https://github.com/) with:
 
 ``` r
 if (!require("devtools")) {

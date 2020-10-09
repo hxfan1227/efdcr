@@ -145,13 +145,13 @@
     <p>Format Delft3D RFGGRID (.grd) file.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>format_rfggrid</span>(
-  <span class='no'>src_grd</span>,
-  <span class='no'>dst_grd</span>,
-  <span class='kw'>na_pattern</span> <span class='kw'>=</span> <span class='st'>"-9.99999000000000024E\\+02"</span>,
-  <span class='kw'>na_replacement</span> <span class='kw'>=</span> <span class='st'>" 0.00000000000000000E+00"</span>,
-  <span class='kw'>coord_sys</span> <span class='kw'>=</span> <span class='st'>"Cartesian"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>format_rfggrid</span><span class='op'>(</span>
+  <span class='va'>src_grd</span>,
+  <span class='va'>dst_grd</span>,
+  na_pattern <span class='op'>=</span> <span class='st'>"-9.99999000000000024E\\+02"</span>,
+  na_replacement <span class='op'>=</span> <span class='st'>" 0.00000000000000000E+00"</span>,
+  coord_sys <span class='op'>=</span> <span class='st'>"Cartesian"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,11 +179,6 @@
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/poyang_lake.grd"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"efdcr"</span>)
-<span class='fu'>format_rfggrid</span>(<span class='kw'>src_grd</span> <span class='kw'>=</span> <span class='no'>f</span>, <span class='kw'>dst_grd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".grd"</span>))
-}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -199,7 +194,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
