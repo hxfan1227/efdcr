@@ -36,7 +36,7 @@ NULL
 #' 
 #' @param arrow_scale Multiplicative scaling factor for arrows
 #'
-#' @param ... other arguments passed on to \code{\link[ggplot2]{layer}}.
+#' @param ... Other arguments passed on to \code{\link[ggplot2]{layer}}.
 #'
 #' @export
 geom_velocity <- function(mapping = NULL, data = NULL, stat = "identity",
