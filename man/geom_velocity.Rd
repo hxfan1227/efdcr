@@ -52,7 +52,7 @@ behaviour from the default plot specification.}
 
 \item{arrow_scale}{Multiplicative scaling factor for arrows}
 
-\item{...}{other arguments passed on to \code{\link[ggplot2]{layer}}.}
+\item{...}{Other arguments passed on to \code{\link[ggplot2]{layer}}.}
 }
 \description{
 Geom for plotting velocity vectors.

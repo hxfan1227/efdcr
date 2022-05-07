@@ -250,7 +250,11 @@ get_efdc_nc_coordinates <- function(nc){
 
 NULL
 #' Plot EFDC nc data
-#' 
+#' @param fname Character. The file name of the \code{.nc} file.
+#' @param var_name Character. The variable name to be plotted.
+#' @param start_date Character. The start date of the simulation.
+#' @param time_unit Character. A string that specifies the type of units that num refers to. 
+#' @param by_f function. A function to apply to the date.
 
 plot_efdc_nc_var <- function(fname, 
                              var_name = names(nc_open(fname)$var),
