@@ -1,4 +1,5 @@
 #' @import ncdf4
+#' @import ggplot2
 #' @importFrom tibble as_tibble
 #' @importFrom cubelyr as.tbl_cube
 #' @importFrom ncdf4 nc_open ncvar_get
@@ -53,8 +54,18 @@ melt_nc <- function(ncarray, var = 'value', var_name, nc, na.rm = F){
   }
   if (!missing(nc)){
     nc_vars <- nc$var
+    col_names <- c(purrr::map_chr(nc_vars[[var]][['dim']], ~ .$name), var_name)
+    if ('lyr' %in% col_names) {
+      if (nc_vars[[var]][['dim']][[which(col_names == 'lyr')]][['len']] == 1) {
+        col_names <- col_names[-1]
+        colnames(ans) <- col_names
+      } else{
+        colnames(ans) <- col_names
+      }
+    } else {
+      colnames(ans) <- col_names
+    }
     
-    colnames(ans) <- c(purrr::map_chr(nc_vars[[var]][['dim']], ~ .$name), var_name)
   }
   ans
 }
@@ -94,7 +105,8 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
   # return ZBOT
   if (var_name == 'ZBOT'){
     if (with_coord){
-      base_df <- merge(coord_df, zbot_df_melt, by = c('col', 'row'), all.y = T)
+      base_df <- merge(coord_df, zbot_df_melt, 
+                       by = intersect(colnames(coord_df), colnames(zbot_df_melt)))
       setDT(base_df)
       return(base_df)
     } else {
@@ -109,7 +121,8 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
     wsel_df <- ncvar_get(nc, 'WSEL')
     # wsel_df_melt <- setDT(reshape2::melt(wsel_df, value.name = 'WSEL'))
     wsel_df_melt <- melt_nc(wsel_df, var = 'WSEL', var_name = 'WSEL', nc = nc)
-    var_df <- merge(zbot_df_melt, wsel_df_melt, by = c('col', 'row'), all.x = T)
+    var_df <- merge(zbot_df_melt, wsel_df_melt, 
+                    by = intersect(colnames(zbot_df_melt), colnames(wsel_df_melt)))
     var_df[, WETFLAG := ifelse((WSEL - ZBOT) > wet_depth | !is.na(WSEL), 1, NA)]
     if (verbose) {
       cat('Finish reading water surface elevation (WSEL)\n')
@@ -119,7 +132,8 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
         var_df <- na.omit(var_df, cols = 'WETFLAG')
       }
       if (with_coord){
-        base_df <- merge(coord_df, var_df, by = c('col', 'row'), all.x = T, allow.cartesian = T)
+        base_df <- merge(coord_df, var_df, by = intersect(colnames(coord_df), colnames(var_df)), 
+                         allow.cartesian = T)
         setDT(base_df)
         return(base_df)
       } else {
@@ -133,7 +147,8 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
     var_df_ <- ncvar_get(nc, var_name)
     # var_df_melt_ <- setDT(reshape2::melt(var_df_, value.name = var_name))
     var_df_melt_ <- melt_nc(var_df_, var = var_name, nc = nc)
-    var_df <- merge(var_df, var_df_melt_, by = c('col', 'row', 'time'), all = T)
+    var_df <- merge(var_df, var_df_melt_, 
+                    by = intersect(colnames(var_df), colnames(var_df_melt_)), all = T)
     if (verbose) {
       cat('Finish reading variables ', var_name, ' !\n', sep = '')
     }
@@ -141,7 +156,9 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
       var_df <- na.omit(var_df, cols = 'WETFLAG')
     }
     if (with_coord){
-      base_df <- merge(coord_df, var_df, by = c('col', 'row'), allow.cartesian = T)
+      base_df <- merge(coord_df, var_df, 
+                       by = intersect(colnames(coord_df), colnames(var_df)), 
+                       allow.cartesian = T)
       setDT(base_df)
       return(base_df)
     } else {
@@ -154,8 +171,12 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
     wsel_df1_melt <- melt_nc(wsel_df1, var = 'WSEL', nc = nc_open(fnames_[1]))
     # wsel_df2_melt <- setDT(reshape2::melt(wsel_df2, value.name = 'WSEL'))
     wsel_df2_melt <- melt_nc(wsel_df2, var = 'WSEL', nc = nc_open(fnames_[2]))
-    var_df <- merge(zbot_df_melt, wsel_df1_melt, by = c('col', 'row'), all.x = T)
-    var_df <- merge(var_df, wsel_df2_melt, by = c('col', 'row', 'time'), all.x = T)
+    var_df <- merge(zbot_df_melt, wsel_df1_melt, 
+                    by = intersect(colnames(zbot_df_melt), colnames(wsel_df1_melt)), 
+                    all = T)
+    var_df <- merge(var_df, wsel_df2_melt, 
+                    by = intersect(colnames(var_df), colnames(wsel_df2_melt)), 
+                    all = T)
     if (verbose) {
       cat('Finish reading water surface elevation (WSEL)\n', 'Comparing Models...\n', sep = '')
     }
@@ -168,14 +189,16 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
     var_df1_melt_ <- melt_nc(var_df1_, var = var_name, var_name = 'V1', nc = nc_open(fnames_[1]))
     # var_df2_melt_ <- setDT(reshape2::melt(var_df2_, value.name = 'V2'))
     var_df2_melt_ <- melt_nc(var_df2_, var = var_name, var_name = 'V2', nc = nc_open(fnames_[2]))
-    var_df <- merge(var_df, var_df1_melt_, by = c('col', 'row', 'time'))
-    var_df <- merge(var_df, var_df2_melt_, by = c('col', 'row', 'time'))
-    var_df <- merge(var_df, var_df_melt_, by = c('col', 'row', 'time'))
+    var_df <- merge(var_df, var_df1_melt_, by = intersect(colnames(var_df1_melt_), colnames(var_df)))
+    var_df <- merge(var_df, var_df2_melt_, by = intersect(colnames(var_df2_melt_), colnames(var_df)))
+    var_df <- merge(var_df, var_df_melt_, by = intersect(colnames(var_df_melt_), colnames(var_df)))
     if (verbose) {
       cat('Finish!\n')
     }
     if (with_coord){
-      base_df <- merge(coord_df, var_df, by = c('col', 'row'), all.x = T, allow.cartesian = T)
+      base_df <- merge(coord_df, var_df, 
+                       by = intersect(colnames(coord_df), colnames(var_df)), 
+                       allow.cartesian = T)
       setDT(base_df)
       return(base_df)
     } else {
@@ -211,15 +234,54 @@ get_efdc_nc_coordinates <- function(nc){
   lat_melt <- melt_nc(lat, var = 'lat', var_name = 'clat', nc = nc)
   lon_bnds_melt <- melt_nc(lon_bnds, var = 'lon_bnds', var_name = 'lon', nc = nc)
   lat_bnds_melt <- melt_nc(lat_bnds, var = 'lat_bnds', var_name = 'lat', nc = nc)
-  lon_lat_df <- merge(lon_bnds_melt, lat_bnds_melt, by = c('col', 'row', 'cnr'))
+  lon_lat_df <- merge(lon_bnds_melt, lat_bnds_melt, 
+                      by = intersect(colnames(lon_bnds_melt), colnames(lat_bnds_melt)))
   setDT(lon_lat_df)
   lon_lat_df <- na.omit(lon_lat_df)
   n_grids <- sum(!is.na(lon))
-  lon_lat_df[, id := rep(1:n_grids, each = 4)]
+  lon_lat_df[order(col, row, cnr), id := rep(1:n_grids, each = 4)]
   # merge center corrdinates:
-  base_df <- merge(lon_lat_df, lon_melt, by = c('col', 'row'))
-  base_df <- merge(base_df, lat_melt, by = c('col', 'row'))
+  base_df <- merge(lon_lat_df, lon_melt, 
+                   by = intersect(colnames(lon_lat_df), colnames(lon_melt)))
+  base_df <- merge(base_df, lat_melt, 
+                   by = intersect(colnames(base_df), colnames(lat_melt)))
   invisible(base_df)
+}
+
+NULL
+#' Plot EFDC nc data
+#' 
+
+plot_efdc_nc_var <- function(fname, 
+                             var_name = names(nc_open(fname)$var),
+                             start_date,
+                             time_unit = 'months', 
+                             by_f = lubridate::month
+                             ) {
+  if (missing(start_date)) {
+    start_date <- lubridate::today()
+  }
+  nc <- nc_open(fname)
+  var_name = match.arg(var_name)
+  grids_dt <- get_efdc_nc_coordinates(nc)
+  var_dt <- get_efdc_nc_dt(fname, var_name = var_name, with_coord = F)
+  var_dt[, tTime := ymd(start_date) + duration(time, time_unit)]
+  if ('lyr' %in% colnames(var_dt)) {
+    var_dt <- var_dt[, lapply(.SD, mean, na.rm = T), .SDcols = var_name, 
+                     by = .(col, row, lyr, time = by_f(tTime))]
+    value_plt_dt <- merge(var_dt, grids_dt, by = c('col', 'row'), allow.cartesian = T)
+    p <- ggplot(value_plt_dt, aes_string(x = 'lon', y = 'lat', group = 'id', fill = var_name)) +
+      geom_polygon(color = NA) +
+      facet_wrap(lyr ~ time)
+  } else {
+    var_dt <- var_dt[, lapply(.SD, mean, na.rm = T), .SDcols = var_name, 
+                     by = .(col, row, time = by_f(tTime))]
+    value_plt_dt <- merge(var_dt, grids_dt, by = c('col', 'row'), allow.cartesian = T)
+    p <- ggplot(value_plt_dt, aes_string(x = 'lon', y = 'lat', group = 'id', fill = var_name)) +
+      geom_polygon(color = NA) +
+      facet_wrap(~ time)
+  }
+  p
 }
 
 utils::globalVariables(c('WETFLAG', 'WSEL', 'ZBOT'))
