@@ -7,6 +7,7 @@ NULL
 #' @import glue
 #' @import sf
 #' @import ncdf4
+#' @importFrom dplyr group_by summarise
 #' @param flxly Character. Name of the lxly.inp
 #' @param fdxdy Character. Name of the dxdy.inp
 #' @param fnc Character. Name of the \code{.nc} file.
@@ -27,8 +28,8 @@ get_efdc_grids_as_sf <- function(flxly, fdxdy, fnc) {
     n_grids <- sum(!is.na(lon_bnds))/4
     lon_lat_df[order(col, row, cnr), id := rep(1:n_grids, each = 4)]
     sf::st_as_sf(lon_lat_df, coords = c('lon', 'lat')) %>%
-      group_by(col, row) %>%
-      summarise(geometry = sf::st_combine(geometry)) %>%
+      dplyr::group_by(col, row) %>%
+      dplyr::summarise(geometry = sf::st_combine(geometry)) %>%
       sf::st_cast('POLYGON') %>%
       sf::st_set_crs(4326) -> grids
     ZBOT_dt <- ncdf4::ncvar_get(nc, varid = 'ZBOT') %>%
