@@ -64,8 +64,8 @@ get_efdc_grids_as_sf <- function(flxly, fdxdy, fnc) {
     Y_dt[, Ctag := stringr::str_replace_all(Ctag, 'Y', 'C')]
     coords_dt <- merge(X_dt, Y_dt, by = .EACHI)
     sf::st_as_sf(coords_dt, coords = c('X', 'Y')) %>%
-      group_by(I, J) %>%
-      summarise(geometry = sf::st_combine(geometry)) %>%
+      dplyr::group_by(I, J) %>%
+      dplyr::summarise(geometry = sf::st_combine(geometry)) %>%
       sf::st_cast('POLYGON') %>%
       sf::st_set_crs(32650) -> grids
     grids <- merge(grids, grids_dt[, .(I, J, ELEV)])
