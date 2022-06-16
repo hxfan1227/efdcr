@@ -74,7 +74,8 @@ get_efdc_grids_as_sf <- function(flxly, fdxdy, fnc) {
 }
 
 
-
+utils::globalVariables(c('cnr', 'geometry', 'ELEV', 'X', 'Y', 'DX', 'DY', 'J', 'X1', 
+                         'X2', 'X3', 'X3', 'X4', 'Y1', 'Y2', 'Y3', 'Y4', 'Ctag'))
 
 
 

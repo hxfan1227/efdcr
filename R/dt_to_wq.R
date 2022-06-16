@@ -1,4 +1,4 @@
-#' @import plyr
+#' @importFrom plyr a_ply
 #' @importFrom lubridate ymd
 #' @importFrom utils write.table
 #' @import data.table
