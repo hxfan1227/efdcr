@@ -20,8 +20,8 @@ get_efdc_grids_as_sf <- function(flxly, fdxdy, fnc) {
     lon_bnds <- ncdf4::ncvar_get(nc, 'lon_bnds')
     # longitudes of 4 corners of the grid
     lat_bnds <- ncdf4::ncvar_get(nc, 'lat_bnds')
-    lon_bnds_melt <- efdcr::melt_nc(lon_bnds, var = 'lon_bnds', var_name = 'lon', nc = nc)
-    lat_bnds_melt <- efdcr::melt_nc(lat_bnds, var = 'lat_bnds', var_name = 'lat', nc = nc)
+    lon_bnds_melt <- efdcr::melt_nc(lon_bnds, var = 'lon_bnds', var_out = 'lon', nc = nc)
+    lat_bnds_melt <- efdcr::melt_nc(lat_bnds, var = 'lat_bnds', var_out = 'lat', nc = nc)
     lon_lat_df <- merge(lon_bnds_melt, lat_bnds_melt, by = .EACHI)
     data.table::setDT(lon_lat_df)
     lon_lat_df <- na.omit(lon_lat_df)
@@ -32,8 +32,13 @@ get_efdc_grids_as_sf <- function(flxly, fdxdy, fnc) {
       dplyr::summarise(geometry = sf::st_combine(geometry)) %>%
       sf::st_cast('POLYGON') %>%
       sf::st_set_crs(4326) -> grids
-    ZBOT_dt <- ncdf4::ncvar_get(nc, varid = 'ZBOT') %>%
-      efdcr::melt_nc(var = 'ZBOT', var_name = 'ELEV', nc = nc, na.rm = T)
+    if ('ZBOT' %in% names(nc$var)) {
+      ZBOT_dt <- ncdf4::ncvar_get(nc, varid = 'ZBOT') %>%
+        efdcr::melt_nc(var = 'ZBOT', var_out = 'ELEV', nc = nc, na.rm = T)
+    } else {
+      ZBOT_dt <- ncdf4::ncvar_get(nc, varid = 'Bottom') %>%
+        efdcr::melt_nc(var = 'Bottom', var_out = 'ELEV', nc = nc, na.rm = T)
+    }
     grids <- merge(grids, ZBOT_dt[, .(col, row, ELEV)])
   } else {
     cat(glue::glue('Generate grids from {flxly} and {fdxdy}\n'))
