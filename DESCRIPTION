@@ -40,7 +40,7 @@ Imports:
     dplyr,
     glue,
     sf
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 URL: https://github.com/hxfan1227/efdcr
 BugReports: https://github.com/hxfan1227/efdcr/issues
 Suggests: 

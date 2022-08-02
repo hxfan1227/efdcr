@@ -70,4 +70,5 @@ List the variable names in the NetCDF file.
 Read data from EE generated NetCDF files.
 
 Read coordinates from EE generated NetCDF files.
+Not used.
 }
