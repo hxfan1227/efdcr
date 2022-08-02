@@ -59,20 +59,30 @@ get_efdc_grids_as_sf <- function(flxly, fdxdy, fnc) {
                     Y3 = Y - DY / 2,
                     X4 = X - DX / 2,
                     Y4 = Y - DY / 2)]
-    grids_dt[, .(I, J, X1, X2, X3, X4)] %>%
-      data.table::melt(id.vars = c('I', 'J'), value.name = 'X', variable.name = 'Ctag') -> X_dt
-    grids_dt[, .(I, J, Y1, Y2, Y3, Y4)] %>%
-      data.table::melt(id.vars = c('I', 'J'), value.name = 'Y', variable.name = 'Ctag') -> Y_dt
-    X_dt[order(I, J), ID := rep(1:NROW(grids_dt), each = 4)]
-    Y_dt[order(I, J), ID := rep(1:NROW(grids_dt), each = 4)]
-    X_dt[, Ctag := stringr::str_replace_all(Ctag, 'X', 'C')]
-    Y_dt[, Ctag := stringr::str_replace_all(Ctag, 'Y', 'C')]
+    X_dt <- grids_dt[, .(I, J, CUE, CVE, CUN, CVN, X1, X2, X3, X4)] %>% 
+      data.table::melt(id.vars = c("I", "J", 'CUE', 'CVE', 'CUN', 'CVN'), 
+                       value.name = "X", variable.name = "Ctag")
+    Y_dt <- grids_dt[, .(I, J, CUE, CVE, CUN, CVN, Y1, Y2, Y3, Y4)] %>% 
+      data.table::melt(id.vars = c("I", "J", 'CUE', 'CVE', 'CUN', 'CVN'), 
+                       value.name = "Y", variable.name = "Ctag")
+    X_dt[order(I, J), `:=`(ID, rep(1:NROW(grids_dt), each = 4))]
+    Y_dt[order(I, J), `:=`(ID, rep(1:NROW(grids_dt), each = 4))]
+    X_dt[, `:=`(Ctag, stringr::str_replace_all(Ctag, "X", "C"))]
+    Y_dt[, `:=`(Ctag, stringr::str_replace_all(Ctag, "Y", "C"))]
     coords_dt <- merge(X_dt, Y_dt, by = .EACHI)
-    sf::st_as_sf(coords_dt, coords = c('X', 'Y')) %>%
-      dplyr::group_by(I, J) %>%
-      dplyr::summarise(geometry = sf::st_combine(geometry)) %>%
-      sf::st_cast('POLYGON') %>%
-      sf::st_set_crs(32650) -> grids
+    grids <- sf::st_as_sf(coords_dt, coords = c("X", "Y")) %>% 
+      dplyr::group_by(I, J) %>% 
+      dplyr::summarise(geometry = sf::st_combine(geometry), 
+                       CUE = mean(CUE), 
+                       CVE = mean(CVE), 
+                       CUN = mean(CUN), 
+                       CVN = mean(CVN)) %>% 
+      sf::st_cast("POLYGON") %>% sf::st_set_crs(32650) %>%
+      dplyr::mutate(cntrd = st_centroid(geometry)) %>% 
+      dplyr::group_by(I, J) %>% 
+      summarise(geometry = 
+                  (geometry - cntrd) * solve(matrix(c(CUE, CVE, CUN, CVN), 2, 2, byrow = T)) + cntrd)
+    
     grids <- merge(grids, grids_dt[, .(I, J, ELEV)])
   }
   invisible(grids)
