@@ -1,7 +1,7 @@
 Package: efdcr
 Type: Package
 Title: Environmental Fluid Dynamics Code Toolbox
-Version: 0.4.1
+Version: 0.5.0
 Authors@R: c(
   person("Hongxiang", "Fan",
          email = "hxfan@niglas.ac.cn",
