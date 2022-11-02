@@ -11,9 +11,10 @@ NULL
 #' @param flxly Character. Name of the lxly.inp
 #' @param fdxdy Character. Name of the dxdy.inp
 #' @param fnc Character. Name of the \code{.nc} file.
+#' @param defult_crs integer. EPSG code for projection
 #' @return an object of class \code{sf}, which is a classed list-column with simple feature geometries 
 #' @export
-get_efdc_grids_as_sf <- function(flxly, fdxdy, fnc) {
+get_efdc_grids_as_sf <- function(flxly, fdxdy, fnc, defult_crs = 32650) {
   if (!missing(fnc)){
     cat(glue::glue('Generate grids from {fnc}\n'))
     nc <- ncdf4::nc_open(fnc)
@@ -72,7 +73,7 @@ get_efdc_grids_as_sf <- function(flxly, fdxdy, fnc) {
       dplyr::group_by(I, J) %>%
       dplyr::summarise(geometry = sf::st_combine(geometry)) %>%
       sf::st_cast('POLYGON') %>%
-      sf::st_set_crs(32650) -> grids
+      sf::st_set_crs(defult_crs) -> grids
     grids <- merge(grids, grids_dt[, .(I, J, ELEV)])
   }
   invisible(grids)
