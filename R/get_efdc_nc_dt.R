@@ -39,10 +39,16 @@ NULL
 #' Melt nc array files
 #' @rdname get_efdc_nc_dt
 #' @export
-melt_nc <- function(ncarray, var = 'value', var_out, nc, na.rm = F){
+melt_nc <- function(ncarray, 
+                    var = 'value', 
+                    var_out, 
+                    nc, 
+                    na.rm = F, 
+                    na.value = -999.0){
   if (missing(var_out)) {
     var_out = var
   }
+  ncarray[which(ncarray == na.value)] <- NA
   ndims <- length(dim(ncarray))
   dim_names <- purrr::map(1:ndims, function(x){1:dim(ncarray)[x]})
   names(dim_names) <- paste0('Var', 1:ndims)
@@ -55,8 +61,9 @@ melt_nc <- function(ncarray, var = 'value', var_out, nc, na.rm = F){
   if (!missing(nc)){
     nc_vars <- nc$var
     col_names <- c(purrr::map_chr(nc_vars[[var]][['dim']], ~ .$name), var_out)
-    if ('lyr' %in% col_names) {
-      if (nc_vars[[var]][['dim']][[which(col_names == 'lyr')]][['len']] == 1) {
+    k_name <- ifelse('lyr' %in% col_names, 'lyr', 'kmax')
+    if (k_name %in% col_names) {
+      if (nc_vars[[var]][['dim']][[which(col_names == k_name)]][['len']] == 1) {
         col_names <- col_names[-1]
         colnames(ans) <- col_names
       } else{
@@ -90,18 +97,18 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
   }
   nc <- nc_open(fnames_[1])
   if (with_coord){
-    coord_df <- get_efdc_nc_coordinates(nc)
+    coord_df <- get_efdc_grids_as_sf(fnc = fnames_[1])
   }
   # add ZBOT 
   if (verbose) {
     cat('Reading bottom elevation (ZBOT)...\n')
   }
   if ('ZBOT' %in% names(nc$var)) {
-    zbot_df <- ncvar_get(nc, 'ZBOT')
+    zbot_df <- ncdf4::ncvar_get(nc, 'ZBOT')
     zbot_df_melt <- melt_nc(zbot_df, var = 'ZBOT', na.rm = T, nc = nc)
   } else {
     if ('Bottom' %in% names(nc$var)) {
-      zbot_df <- ncvar_get(nc, 'Bottom')
+      zbot_df <- ncdf4::ncvar_get(nc, 'Bottom')
       zbot_df_melt <- melt_nc(zbot_df, var = 'Bottom', var_out = 'ZBOT', na.rm = T, nc = nc)
     }
   }
@@ -126,9 +133,9 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
     cat('Reading water surface elevation (WSEL)...\n')
   }
   if (length(fnames_) == 1){
-    wsel_df <- ncvar_get(nc, 'WSEL')
+    wsel_df <- ncdf4::ncvar_get(nc, 'WSEL')
     # wsel_df_melt <- setDT(reshape2::melt(wsel_df, value.name = 'WSEL'))
-    wsel_df_melt <- melt_nc(wsel_df, var = 'WSEL', nc = nc)
+    wsel_df_melt <- melt_nc(wsel_df, var = 'WSEL', nc = nc, na.rm = T)
     var_df <- merge(zbot_df_melt, wsel_df_melt, 
                     by = intersect(colnames(zbot_df_melt), colnames(wsel_df_melt)))
     var_df[, WETFLAG := ifelse((WSEL - ZBOT) > wet_depth | !is.na(WSEL), 1, NA)]
@@ -154,7 +161,7 @@ get_efdc_nc_var <- function(..., var_name, wet_depth = 0.15, verbose = T,  with_
     }
     var_df_ <- ncvar_get(nc, var_name)
     # var_df_melt_ <- setDT(reshape2::melt(var_df_, value.name = var_name))
-    var_df_melt_ <- melt_nc(var_df_, var = var_name, nc = nc)
+    var_df_melt_ <- melt_nc(var_df_, var = var_name, nc = nc, na.rm = T)
     var_df <- merge(var_df, var_df_melt_, 
                     by = intersect(colnames(var_df), colnames(var_df_melt_)), all = T)
     if (verbose) {

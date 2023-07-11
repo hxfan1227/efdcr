@@ -2,9 +2,12 @@
 % Please edit documentation in R/get_efdc_grids_as_sf.R
 \name{get_efdc_grids_as_sf}
 \alias{get_efdc_grids_as_sf}
+\alias{correct_ang}
 \title{Get EFDC grids from lxly or dxly file and convert it to the sf object}
 \usage{
 get_efdc_grids_as_sf(flxly, fdxdy, fnc)
+
+correct_ang(ang1, ang2, ang)
 }
 \arguments{
 \item{flxly}{Character. Name of the lxly.inp}

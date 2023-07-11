@@ -8,6 +8,7 @@ NULL
 #' @import sf
 #' @import ncdf4
 #' @importFrom dplyr group_by summarise
+#' @importFrom rlang sym
 #' @param flxly Character. Name of the lxly.inp
 #' @param fdxdy Character. Name of the dxdy.inp
 #' @param fnc Character. Name of the \code{.nc} file.
@@ -18,18 +19,21 @@ get_efdc_grids_as_sf <- function(flxly, fdxdy, fnc, defult_crs = 32650) {
   if (!missing(fnc)){
     cat(glue::glue('Generate grids from {fnc}\n'))
     nc <- ncdf4::nc_open(fnc)
-    lon_bnds <- ncdf4::ncvar_get(nc, 'lon_bnds')
+    lon_varname <- ifelse('lon_bnds' %in% names(nc$var), 'lon_bnds', 'lng_bnds')
+    lon_bnds <- ncdf4::ncvar_get(nc, lon_varname)
     # longitudes of 4 corners of the grid
     lat_bnds <- ncdf4::ncvar_get(nc, 'lat_bnds')
-    lon_bnds_melt <- efdcr::melt_nc(lon_bnds, var = 'lon_bnds', var_out = 'lon', nc = nc)
-    lat_bnds_melt <- efdcr::melt_nc(lat_bnds, var = 'lat_bnds', var_out = 'lat', nc = nc)
+    lon_bnds_melt <- efdcr::melt_nc(lon_bnds, var = lon_varname, var_out = 'lon', nc = nc, na.rm = T)
+    lat_bnds_melt <- efdcr::melt_nc(lat_bnds, var = 'lat_bnds', var_out = 'lat', nc = nc, na.rm = T)
     lon_lat_df <- merge(lon_bnds_melt, lat_bnds_melt, by = .EACHI)
     data.table::setDT(lon_lat_df)
     lon_lat_df <- na.omit(lon_lat_df)
     n_grids <- sum(!is.na(lon_bnds))/4
-    lon_lat_df[order(col, row, cnr), id := rep(1:n_grids, each = 4)]
+    col_name <- rlang::sym(colnames(lon_lat_df)[2])
+    row_name <- rlang::sym(colnames(lon_lat_df)[3])
+    setorderv(lon_lat_df, colnames(lon_lat_df)[c(2, 3, 1)])[, id := rep(1:n_grids, each = 4)]
     sf::st_as_sf(lon_lat_df, coords = c('lon', 'lat')) %>%
-      dplyr::group_by(col, row) %>%
+      dplyr::group_by(!!col_name, !!row_name) %>%
       dplyr::summarise(geometry = sf::st_combine(geometry)) %>%
       sf::st_cast('POLYGON') %>%
       sf::st_set_crs(4326) -> grids
@@ -40,7 +44,7 @@ get_efdc_grids_as_sf <- function(flxly, fdxdy, fnc, defult_crs = 32650) {
       ZBOT_dt <- ncdf4::ncvar_get(nc, varid = 'Bottom') %>%
         efdcr::melt_nc(var = 'Bottom', var_out = 'ELEV', nc = nc, na.rm = T)
     }
-    grids <- merge(grids, ZBOT_dt[, .(col, row, ELEV)])
+    grids <- merge(grids, ZBOT_dt)
   } else {
     cat(glue::glue('Generate grids from {flxly} and {fdxdy}\n'))
     lxly_colnames <- readr::read_lines(flxly, skip = 3, n_max = 1) %>%
@@ -60,25 +64,53 @@ get_efdc_grids_as_sf <- function(flxly, fdxdy, fnc, defult_crs = 32650) {
                     Y3 = Y - DY / 2,
                     X4 = X - DX / 2,
                     Y4 = Y - DY / 2)]
-    grids_dt[, .(I, J, X1, X2, X3, X4)] %>%
-      data.table::melt(id.vars = c('I', 'J'), value.name = 'X', variable.name = 'Ctag') -> X_dt
-    grids_dt[, .(I, J, Y1, Y2, Y3, Y4)] %>%
-      data.table::melt(id.vars = c('I', 'J'), value.name = 'Y', variable.name = 'Ctag') -> Y_dt
-    X_dt[order(I, J), ID := rep(1:NROW(grids_dt), each = 4)]
-    Y_dt[order(I, J), ID := rep(1:NROW(grids_dt), each = 4)]
-    X_dt[, Ctag := stringr::str_replace_all(Ctag, 'X', 'C')]
-    Y_dt[, Ctag := stringr::str_replace_all(Ctag, 'Y', 'C')]
+    X_dt <- grids_dt[, .(I, J, CUE, CVE, CUN, CVN, X1, X2, X3, X4)] %>% 
+      data.table::melt(id.vars = c("I", "J", 'CUE', 'CVE', 'CUN', 'CVN'), 
+                       value.name = "X", variable.name = "Ctag")
+    Y_dt <- grids_dt[, .(I, J, CUE, CVE, CUN, CVN, Y1, Y2, Y3, Y4)] %>% 
+      data.table::melt(id.vars = c("I", "J", 'CUE', 'CVE', 'CUN', 'CVN'), 
+                       value.name = "Y", variable.name = "Ctag")
+    X_dt[order(I, J), `:=`(ID, rep(1:NROW(grids_dt), each = 4))]
+    Y_dt[order(I, J), `:=`(ID, rep(1:NROW(grids_dt), each = 4))]
+    X_dt[, `:=`(Ctag, stringr::str_replace_all(Ctag, "X", "C"))]
+    Y_dt[, `:=`(Ctag, stringr::str_replace_all(Ctag, "Y", "C"))]
     coords_dt <- merge(X_dt, Y_dt, by = .EACHI)
-    sf::st_as_sf(coords_dt, coords = c('X', 'Y')) %>%
-      dplyr::group_by(I, J) %>%
-      dplyr::summarise(geometry = sf::st_combine(geometry)) %>%
-      sf::st_cast('POLYGON') %>%
-      sf::st_set_crs(defult_crs) -> grids
+    grids <- sf::st_as_sf(coords_dt, coords = c("X", "Y")) %>% 
+      dplyr::group_by(I, J) %>% 
+      dplyr::summarise(geometry = sf::st_combine(geometry), 
+                       CUE = mean(CUE), 
+                       CVE = mean(CVE), 
+                       CUN = mean(CUN), 
+                       CVN = mean(CVN)) %>% 
+      sf::st_cast("POLYGON") %>%
+      dplyr::mutate(ang1 = atan2(CUN, CUE), 
+                    ang2 = atan2(-CVE, CVN), 
+                    ang = 0.5 * (ang1 + ang2), 
+                    ang = Vectorize(correct_ang)(ang1, ang2, ang), 
+                    CUE = cos(ang), 
+                    CVE = -sin(ang), 
+                    CUN = sin(ang),
+                    CVN = cos(ang)) %>%
+      dplyr::mutate(cntrd = sf::st_centroid(geometry)) %>% 
+      dplyr::group_by(I, J) %>% 
+      summarise(geometry = 
+                  (geometry - cntrd) * solve(matrix(c(CUE, CVE, CUN, CVN), 2, 2, byrow = T)) + cntrd) %>%
+      sf::st_set_crs(defult_crs) %>% 
+      sf::st_transform(4326)
     grids <- merge(grids, grids_dt[, .(I, J, ELEV)])
   }
   invisible(grids)
 }
 
+#'@rdname get_efdc_grids_as_sf
+correct_ang <- function(ang1, ang2, ang) {
+  if (sign(ang1) != sign(ang2)) {
+    if (abs(ang1) > 1.57 | abs(ang2) > 1.57) {
+      ang <- ang + acos(-1.0)
+    } 
+  }
+  ang
+}
 
 utils::globalVariables(c('cnr', 'geometry', 'ELEV', 'X', 'Y', 'DX', 'DY', 'J', 'X1', 
                          'X2', 'X3', 'X3', 'X4', 'Y1', 'Y2', 'Y3', 'Y4', 'Ctag'))

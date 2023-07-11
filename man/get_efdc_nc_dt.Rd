@@ -17,7 +17,7 @@ get_efdc_nc_dt(
   verbose = T
 )
 
-melt_nc(ncarray, var = "value", var_out, nc, na.rm = F)
+melt_nc(ncarray, var = "value", var_out, nc, na.rm = F, na.value = -999)
 
 has_variable(filename)
 
@@ -70,4 +70,5 @@ List the variable names in the NetCDF file.
 Read data from EE generated NetCDF files.
 
 Read coordinates from EE generated NetCDF files.
+Not used.
 }
